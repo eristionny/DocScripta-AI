@@ -1,0 +1,10 @@
+docscripta-ai
+│
+├── app.py
+├── sintetizador.py
+├── reescrever_texto.py
+├── originalidade.py
+├── ia_detector.py
+├── requirements.txt
+└── assets
+    └── tonnybot.png
