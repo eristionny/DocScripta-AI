@@ -1,4 +1,3 @@
-```txt
 pypdf
 google-generativeai
 requests
@@ -11,4 +10,3 @@ pandas
 numpy
 Pillow
 streamlit
-```
