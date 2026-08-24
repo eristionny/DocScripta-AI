@@ -1,7 +1,4 @@
-```python
 import io
-from pathlib import Path
-
 import streamlit as st
 
 from sintetizador import gerar_sintese_academica
@@ -29,169 +26,6 @@ st.set_page_config(
     page_icon="📚",
     layout="wide"
 )
-
-
-# ============================================================
-# IDENTIDADE VISUAL — DOCSCRIPTA AI
-# ============================================================
-
-def localizar_imagem_robo():
-
-    pasta_projeto = Path(__file__).resolve().parent
-
-    caminhos_possiveis = [
-
-        # Caminho recomendado
-        pasta_projeto / "assets" / "robo.png",
-
-        pasta_projeto / "assets" / "robot.png",
-
-        pasta_projeto / "assets" / "logo.png",
-
-        pasta_projeto / "assets" / "robo.jpg",
-
-        pasta_projeto / "assets" / "robot.jpg",
-
-        # Caso a imagem esteja na raiz do projeto
-        pasta_projeto / "robo.png",
-
-        pasta_projeto / "robot.png",
-
-        pasta_projeto / "logo.png",
-
-        pasta_projeto / "robo.jpg",
-
-        pasta_projeto / "robot.jpg",
-
-        pasta_projeto / "logo.jpg",
-
-    ]
-
-    for caminho in caminhos_possiveis:
-
-        if caminho.exists() and caminho.is_file():
-
-            return caminho
-
-    # Procura automaticamente arquivos de imagem
-    # relacionados ao robô ou à identidade visual
-
-    pastas = [
-        pasta_projeto,
-        pasta_projeto / "assets"
-    ]
-
-    palavras = [
-        "robo",
-        "robot",
-        "logo",
-        "docscripta"
-    ]
-
-    extensoes = [
-        ".png",
-        ".jpg",
-        ".jpeg",
-        ".webp"
-    ]
-
-    for pasta in pastas:
-
-        if not pasta.exists():
-            continue
-
-        try:
-
-            for arquivo in pasta.iterdir():
-
-                if not arquivo.is_file():
-                    continue
-
-                nome = arquivo.name.lower()
-
-                if (
-                    arquivo.suffix.lower() in extensoes
-                    and any(
-                        palavra in nome
-                        for palavra in palavras
-                    )
-                ):
-
-                    return arquivo
-
-        except Exception:
-            pass
-
-    return None
-
-
-def mostrar_cabecalho():
-
-    imagem_robo = localizar_imagem_robo()
-
-    coluna_imagem, coluna_texto = st.columns(
-        [1, 4],
-        vertical_alignment="center"
-    )
-
-    with coluna_imagem:
-
-        if imagem_robo:
-
-            st.image(
-                str(imagem_robo),
-                width=180
-            )
-
-        else:
-
-            st.markdown(
-                """
-                <div style="
-                    font-size:90px;
-                    text-align:center;
-                    padding:10px;
-                ">
-                    🤖
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-    with coluna_texto:
-
-        st.markdown(
-            """
-            <div style="
-                padding-top:10px;
-            ">
-                <h1 style="
-                    margin-bottom:0;
-                ">
-                    📚 DocScripta AI
-                </h1>
-
-                <p style="
-                    font-size:20px;
-                    margin-top:5px;
-                    margin-bottom:5px;
-                ">
-                    Assistente Acadêmico Inteligente
-                </p>
-
-                <p style="
-                    font-size:15px;
-                    margin-top:5px;
-                ">
-                    <strong>Criador:</strong>
-                    Eristionny Alves Batista
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-    st.divider()
 
 
 # ============================================================
@@ -236,7 +70,6 @@ def extrair_texto_arquivo(arquivo):
                             celulas.append(texto)
 
                     if celulas:
-
                         partes.append(
                             " | ".join(celulas)
                         )
@@ -260,7 +93,6 @@ def extrair_texto_arquivo(arquivo):
                 texto = pagina.extract_text()
 
                 if texto:
-
                     paginas.append(
                         texto.strip()
                     )
@@ -461,21 +293,18 @@ def mostrar_resultado_ia(resultado):
     col1, col2, col3 = st.columns(3)
 
     with col1:
-
         st.metric(
             "Índice estimado",
             f"{indice:.1f}%"
         )
 
     with col2:
-
         st.metric(
             "Classificação",
             classificacao
         )
 
     with col3:
-
         st.metric(
             "Nível de alerta",
             nivel_alerta
@@ -520,6 +349,10 @@ def mostrar_resultado_ia(resultado):
         "de autoria por IA."
     )
 
+    # ========================================================
+    # CARACTERÍSTICAS
+    # ========================================================
+
     caracteristicas = resultado.get(
         "caracteristicas",
         []
@@ -542,6 +375,10 @@ def mostrar_resultado_ia(resultado):
         st.write(
             "Nenhuma característica forte foi identificada."
         )
+
+    # ========================================================
+    # TRECHOS RELEVANTES
+    # ========================================================
 
     trechos = resultado.get(
         "trechos_relevantes",
@@ -636,6 +473,10 @@ def mostrar_resultado_ia(resultado):
                         "concentração dos sinais analisados."
                     )
 
+    # ========================================================
+    # MUDANÇAS DE ESTILO
+    # ========================================================
+
     mudancas = resultado.get(
         "mudancas_estilo",
         []
@@ -688,6 +529,10 @@ def mostrar_resultado_ia(resultado):
                     "por si só, uso de IA."
                 )
 
+    # ========================================================
+    # DISTRIBUIÇÃO
+    # ========================================================
+
     distribuicao = resultado.get(
         "distribuicao_sinais"
     )
@@ -721,6 +566,10 @@ def mostrar_resultado_ia(resultado):
                     f"{distribuicao[chave]}%"
                 )
 
+    # ========================================================
+    # CONCENTRAÇÃO
+    # ========================================================
+
     concentracao = resultado.get(
         "concentracao_documental"
     )
@@ -734,6 +583,10 @@ def mostrar_resultado_ia(resultado):
         st.write(
             concentracao
         )
+
+    # ========================================================
+    # ESTATÍSTICAS
+    # ========================================================
 
     estatisticas = resultado.get(
         "estatisticas",
@@ -823,6 +676,7 @@ VALORES_INICIAIS = {
 
     "text_key": 0,
 
+    # ORIGINALIDADE
     "texto_documento_revisao": "",
     "resultado_originalidade": None,
     "relatorio_originalidade": None,
@@ -833,6 +687,7 @@ VALORES_INICIAIS = {
     "historico_alteracoes": [],
     "arquivo_carregado_nome": "",
 
+    # DETECTOR DE IA
     "texto_analise_ia": "",
     "resultado_ia": None,
     "texto_revisao_ia": "",
@@ -841,6 +696,7 @@ VALORES_INICIAIS = {
     "trecho_revisao_ia": "",
     "indice_trecho_revisao_ia": None,
 
+    # REESCREVER TEXTO
     "reescrever_key": 0,
     "texto_reescrito_resultado": None,
 }
@@ -883,7 +739,9 @@ def atualizar_editor_ia():
 # CABEÇALHO
 # ============================================================
 
-mostrar_cabecalho()
+st.title(
+    "📚 DocScripta AI"
+)
 
 st.caption(
     "Assistente acadêmico para pesquisa, resolução, "
@@ -920,6 +778,10 @@ with aba_principal:
         "ou envie um PDF/DOCX."
     )
 
+    # ========================================================
+    # PESQUISA DIRETA
+    # ========================================================
+
     st.markdown(
         "### 🔎 Pesquisa Direta"
     )
@@ -944,6 +806,10 @@ with aba_principal:
             )
         )
 
+        # ----------------------------------------------------
+        # BOTÕES
+        # ----------------------------------------------------
+
         col_pesquisar, col_limpar = st.columns(2)
 
         with col_pesquisar:
@@ -960,6 +826,10 @@ with aba_principal:
                 use_container_width=True
             )
 
+    # --------------------------------------------------------
+    # LIMPAR PESQUISA
+    # --------------------------------------------------------
+
     if btn_limpar_pesquisa:
 
         st.session_state.text_key += 1
@@ -969,6 +839,10 @@ with aba_principal:
         st.session_state.resultado_arquivo = None
 
         st.rerun()
+
+    # --------------------------------------------------------
+    # EXECUTAR PESQUISA
+    # --------------------------------------------------------
 
     if (
         btn_texto
@@ -998,6 +872,10 @@ with aba_principal:
                     nome_arquivo
                 )
 
+                # ------------------------------------------------
+                # LIMPA A BARRA DE PESQUISA APÓS SUCESSO
+                # ------------------------------------------------
+
                 st.session_state.text_key += 1
 
                 st.rerun()
@@ -1009,6 +887,10 @@ with aba_principal:
                 )
 
     st.divider()
+
+    # ========================================================
+    # ARQUIVO
+    # ========================================================
 
     st.markdown(
         "### 📄 Envio de Documento"
@@ -1068,6 +950,10 @@ with aba_principal:
                 st.error(
                     f"Erro ao processar o documento: {erro}"
                 )
+
+    # ========================================================
+    # RESULTADO DA PESQUISA
+    # ========================================================
 
     if st.session_state.resultado_texto:
 
@@ -1130,6 +1016,10 @@ with aba_originalidade:
         "uma conclusão de plágio."
     )
 
+    # ========================================================
+    # ARQUIVO
+    # ========================================================
+
     st.subheader(
         "1. Documento"
     )
@@ -1191,6 +1081,10 @@ with aba_originalidade:
                     f"Erro ao ler o arquivo: {erro}"
                 )
 
+    # ========================================================
+    # EDITOR
+    # ========================================================
+
     st.markdown(
         "### ✏️ Texto atual do documento"
     )
@@ -1237,6 +1131,10 @@ with aba_originalidade:
             f"Palavras: {quantidade_palavras}"
         )
 
+    # ========================================================
+    # CONFIGURAÇÃO
+    # ========================================================
+
     st.subheader(
         "2. Configuração da análise"
     )
@@ -1254,6 +1152,10 @@ with aba_originalidade:
         value=5,
         key="quantidade_fontes"
     )
+
+    # ========================================================
+    # ANALISAR ORIGINALIDADE
+    # ========================================================
 
     if st.button(
         "🔎 ANALISAR ORIGINALIDADE",
@@ -1317,6 +1219,10 @@ with aba_originalidade:
                         f"Erro na análise: {erro}"
                     )
 
+    # ========================================================
+    # RESULTADO
+    # ========================================================
+
     resultado = (
         st.session_state.resultado_originalidade
     )
@@ -1356,28 +1262,24 @@ with aba_originalidade:
         c1, c2, c3, c4 = st.columns(4)
 
         with c1:
-
             st.metric(
                 "Similaridade",
                 f"{indice:.2f}%"
             )
 
         with c2:
-
             st.metric(
                 "Fontes",
                 fontes
             )
 
         with c3:
-
             st.metric(
                 "Trechos",
                 trechos
             )
 
         with c4:
-
             st.metric(
                 "Citações",
                 citacoes
@@ -1392,6 +1294,10 @@ with aba_originalidade:
             f"**Classificação:** "
             f"{resultado.get('classificacao', '')}"
         )
+
+        # ====================================================
+        # FONTES
+        # ====================================================
 
         st.subheader(
             "📚 Fontes"
@@ -1472,6 +1378,10 @@ with aba_originalidade:
                     )
                 )
 
+        # ====================================================
+        # TRECHOS DE ORIGINALIDADE
+        # ====================================================
+
         st.subheader(
             "⚠️ Trechos para revisão"
         )
@@ -1545,6 +1455,10 @@ with aba_originalidade:
 
                         st.rerun()
 
+        # ====================================================
+        # CITAÇÕES
+        # ====================================================
+
         st.subheader(
             "📚 Possíveis citações"
         )
@@ -1574,6 +1488,10 @@ with aba_originalidade:
                     st.write(
                         frase
                     )
+
+        # ====================================================
+        # REVISÃO DE ORIGINALIDADE
+        # ====================================================
 
         if st.session_state.trecho_revisao:
 
@@ -1828,6 +1746,10 @@ REFERÊNCIA:
 
                     st.rerun()
 
+        # ====================================================
+        # DOCUMENTO ATUAL
+        # ====================================================
+
         st.divider()
 
         st.subheader(
@@ -1845,6 +1767,10 @@ REFERÊNCIA:
             disabled=True,
             key="visualizacao_documento_atual"
         )
+
+        # ====================================================
+        # COPIAR
+        # ====================================================
 
         st.markdown(
             "### 📋 Copiar documento atual"
@@ -1864,13 +1790,13 @@ REFERÊNCIA:
             const texto = `{texto_js}`;
 
             navigator.clipboard.writeText(texto)
-                .then(function(){{
+                .then(function() {{
 
                     document.getElementById(
                         "aviso-docscripta"
                     ).style.display = "block";
 
-                    setTimeout(function(){{
+                    setTimeout(function() {{
 
                         document.getElementById(
                             "aviso-docscripta"
@@ -1879,7 +1805,7 @@ REFERÊNCIA:
                     }}, 2500);
 
                 }})
-                .catch(function(){{
+                .catch(function() {{
 
                     alert(
                         "Não foi possível copiar automaticamente."
@@ -1926,6 +1852,10 @@ REFERÊNCIA:
             height=85
         )
 
+        # ====================================================
+        # DESFAZER
+        # ====================================================
+
         if st.session_state.historico_alteracoes:
 
             if st.button(
@@ -1946,6 +1876,10 @@ REFERÊNCIA:
                 )
 
                 st.rerun()
+
+        # ====================================================
+        # REANALISAR
+        # ====================================================
 
         st.subheader(
             "🔄 Reanalisar documento atual"
@@ -2008,6 +1942,10 @@ REFERÊNCIA:
                             f"Erro na nova análise: {erro}"
                         )
 
+        # ====================================================
+        # DOWNLOAD WORD
+        # ====================================================
+
         st.subheader(
             "📥 Exportação"
         )
@@ -2032,6 +1970,10 @@ REFERÊNCIA:
                 ),
                 key="download_doc_revisado"
             )
+
+        # ====================================================
+        # RELATÓRIO ORIGINALIDADE
+        # ====================================================
 
         st.subheader(
             "📊 Relatório de Originalidade"
@@ -2059,6 +2001,10 @@ REFERÊNCIA:
                 mime="text/plain",
                 key="download_relatorio_originalidade"
             )
+
+        # ====================================================
+        # LIMPAR
+        # ====================================================
 
         st.divider()
 
@@ -2100,6 +2046,10 @@ with aba_ia:
         "definitiva de autoria por IA."
     )
 
+    # ========================================================
+    # TEXTO
+    # ========================================================
+
     st.subheader(
         "1. Texto para análise"
     )
@@ -2122,6 +2072,10 @@ with aba_ia:
     st.session_state.texto_analise_ia = (
         texto_ia_editor
     )
+
+    # ========================================================
+    # ARQUIVO
+    # ========================================================
 
     arquivo_ia = st.file_uploader(
         "Ou envie um PDF/DOCX:",
@@ -2169,6 +2123,10 @@ with aba_ia:
                     f"Erro ao ler o arquivo: {erro}"
                 )
 
+    # ========================================================
+    # CONTADORES
+    # ========================================================
+
     palavras_ia = len(
         st.session_state.texto_analise_ia.split()
     )
@@ -2190,6 +2148,10 @@ with aba_ia:
         st.caption(
             f"Caracteres: {caracteres_ia}"
         )
+
+    # ========================================================
+    # ANALISAR
+    # ========================================================
 
     if st.button(
         "🔎 ANALISAR TEXTO",
@@ -2239,6 +2201,10 @@ with aba_ia:
                         f"Erro na análise de IA: {erro}"
                     )
 
+    # ========================================================
+    # RESULTADO
+    # ========================================================
+
     resultado_ia = (
         st.session_state.resultado_ia
     )
@@ -2248,6 +2214,10 @@ with aba_ia:
         mostrar_resultado_ia(
             resultado_ia
         )
+
+        # ====================================================
+        # TRECHOS PARA REVISÃO
+        # ====================================================
 
         trechos_ia = resultado_ia.get(
             "trechos_relevantes",
@@ -2305,6 +2275,10 @@ with aba_ia:
                     "fazer uma revisão de redação."
                 )
 
+            # ------------------------------------------------
+            # SELEÇÃO DE TRECHO
+            # ------------------------------------------------
+
             for numero, trecho in enumerate(
                 trechos_ia,
                 start=1
@@ -2323,6 +2297,10 @@ with aba_ia:
                     st.session_state.resultado_antes_depois_ia = None
 
                     st.rerun()
+
+            # ------------------------------------------------
+            # GERAR REVISÃO
+            # ------------------------------------------------
 
             indice_selecionado = (
                 st.session_state.get(
@@ -2415,6 +2393,10 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
                             f"Erro ao revisar o trecho: {erro}"
                         )
 
+                # --------------------------------------------
+                # RESULTADO DA REVISÃO
+                # --------------------------------------------
+
                 if st.session_state.texto_revisao_ia:
 
                     st.markdown(
@@ -2503,6 +2485,10 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
 
                             st.rerun()
 
+        # ====================================================
+        # DOCUMENTO ATUAL
+        # ====================================================
+
         st.divider()
 
         st.subheader(
@@ -2518,6 +2504,10 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
             disabled=True,
             key="documento_atual_ia"
         )
+
+        # ====================================================
+        # REANALISAR
+        # ====================================================
 
         if st.button(
             "🔄 REANALISAR DOCUMENTO",
@@ -2566,6 +2556,10 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
                             f"Erro na reanálise: {erro}"
                         )
 
+        # ====================================================
+        # DESFAZER
+        # ====================================================
+
         if st.session_state.historico_ia:
 
             if st.button(
@@ -2590,6 +2584,10 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
 
                 st.rerun()
 
+        # ====================================================
+        # COPIAR
+        # ====================================================
+
         st.markdown(
             "### 📋 Copiar texto atual"
         )
@@ -2608,13 +2606,13 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
             const texto = `{texto_ia_js}`;
 
             navigator.clipboard.writeText(texto)
-                .then(function(){{
+                .then(function() {{
 
                     document.getElementById(
                         "aviso-copia-ia"
                     ).style.display = "block";
 
-                    setTimeout(function(){{
+                    setTimeout(function() {{
 
                         document.getElementById(
                             "aviso-copia-ia"
@@ -2623,7 +2621,7 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
                     }}, 2500);
 
                 }})
-                .catch(function(){{
+                .catch(function() {{
 
                     alert(
                         "Não foi possível copiar automaticamente."
@@ -2670,6 +2668,10 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
             height=85
         )
 
+        # ====================================================
+        # DOWNLOAD WORD
+        # ====================================================
+
         buffer_ia, nome_ia = (
             criar_docx_com_texto(
                 st.session_state.texto_analise_ia,
@@ -2687,6 +2689,10 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
             ),
             key="download_doc_ia"
         )
+
+        # ====================================================
+        # RELATÓRIO
+        # ====================================================
 
         st.subheader(
             "📊 Relatório da Análise de IA"
@@ -2726,6 +2732,10 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
                 f"Não foi possível gerar o relatório: {erro}"
             )
 
+    # ========================================================
+    # LIMPAR ANÁLISE DE IA
+    # ========================================================
+
     st.divider()
 
     if st.button(
@@ -2742,10 +2752,10 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
         st.session_state.indice_trecho_revisao_ia = None
 
         if "arquivo_ia_carregado" in st.session_state:
-
             st.session_state.arquivo_ia_carregado = ""
 
         st.rerun()
+
 
 
 # ============================================================
@@ -2754,14 +2764,16 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
 
 with aba_reescrever:
 
-    st.subheader(
-        "✏️ Reescrever Texto"
-    )
+    st.subheader("✏️ Reescrever Texto")
 
     st.write(
         "Reescreva seu texto mantendo o significado "
         "e as informações importantes."
     )
+
+    # ------------------------------------------------
+    # KEYS DINÂMICAS (para permitir limpeza)
+    # ------------------------------------------------
 
     rk = st.session_state.reescrever_key
 
@@ -2826,6 +2838,7 @@ with aba_reescrever:
 
         st.session_state.texto_reescrito_resultado = None
 
+        # Incrementa a key para forçar recriação dos widgets vazios
         st.session_state.reescrever_key += 1
 
         st.rerun()
@@ -2898,4 +2911,3 @@ with aba_reescrever:
             mime="text/plain",
             use_container_width=True
         )
-```
