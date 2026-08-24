@@ -743,15 +743,16 @@ st.markdown(
     <style>
 
     .docscripta-header {
+        width: 100%;
         text-align: center;
-        padding: 25px 10px 20px 10px;
+        padding: 20px 10px 25px 10px;
         margin-bottom: 20px;
     }
 
     .docscripta-robot {
-        font-size: 80px;
+        font-size: 90px;
         line-height: 1;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
     }
 
     .docscripta-title {
@@ -761,9 +762,9 @@ st.markdown(
     }
 
     .docscripta-created {
-        font-size: 18px;
+        font-size: 19px;
+        font-weight: 500;
         margin-top: 8px;
-        opacity: 0.75;
     }
 
     .docscripta-subtitle {
