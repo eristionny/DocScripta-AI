@@ -23,7 +23,7 @@ from ia_detector import (
 
 st.set_page_config(
     page_title="DocScripta AI",
-    page_icon="🤖",
+    page_icon="📚",
     layout="wide"
 )
 
@@ -734,69 +734,18 @@ def atualizar_editor_ia():
             st.session_state.editor_ia
         )
 
+
 # ============================================================
-# CABEÇALHO VISUAL DOCSCRIPTA AI
+# CABEÇALHO
 # ============================================================
 
-st.markdown(
-    """
-    <style>
+st.title(
+    "📚 DocScripta AI"
+)
 
-    .docscripta-header {
-        width: 100%;
-        text-align: center;
-        padding: 20px 10px 25px 10px;
-        margin-bottom: 20px;
-    }
-
-    .docscripta-robot {
-        font-size: 90px;
-        line-height: 1;
-        margin-bottom: 10px;
-    }
-
-    .docscripta-title {
-        font-size: 42px;
-        font-weight: 800;
-        margin: 5px 0;
-    }
-
-    .docscripta-created {
-        font-size: 19px;
-        font-weight: 500;
-        margin-top: 8px;
-    }
-
-    .docscripta-subtitle {
-        font-size: 16px;
-        margin-top: 12px;
-        opacity: 0.8;
-    }
-
-    </style>
-
-    <div class="docscripta-header">
-
-        <div class="docscripta-robot">
-            🤖
-        </div>
-
-        <div class="docscripta-title">
-            📚 DocScripta AI
-        </div>
-
-        <div class="docscripta-created">
-            Criado por: <strong>Eristionny</strong>
-        </div>
-
-        <div class="docscripta-subtitle">
-            Assistente acadêmico inteligente para pesquisa,
-            revisão, originalidade e análise de textos.
-        </div>
-
-    </div>
-    """,
-    unsafe_allow_html=True
+st.caption(
+    "Assistente acadêmico para pesquisa, resolução, "
+    "revisão, originalidade e análise de IA."
 )
 
 
