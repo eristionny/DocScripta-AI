@@ -1,12 +1,50 @@
+// Service Worker para DocScripta AI PWA
 const CACHE_NAME = 'docscripta-v1';
-const urlsToCache = ['/', '/static/manifest.json', '/static/tonnybot-192.png', '/static/tonnybot-512.png'];
+const urlsToCache = [
+  '/',
+  '/static/manifest.json',
+  '/static/tonnybot-192.png',
+  '/static/tonnybot-512.png'
+];
+
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache)).then(() => self.skipWaiting()));
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
+      .then(() => self.skipWaiting())
+  );
 });
+
 self.addEventListener('activate', event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)))).then(() => self.clients.claim()));
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+      )
+    ).then(() => self.clients.claim())
+  );
 });
+
 self.addEventListener('fetch', event => {
-  if (event.request.url.includes('generativelanguage.googleapis.com')) return;
-  event.respondWith(caches.match(event.request).then(response => { if (response) return response; return fetch(event.request); }));
+  // Para a API do Gemini, sempre ir na rede (nao cachear)
+  if (event.request.url.includes('generativelanguage.googleapis.com')) {
+    return;
+  }
+  
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        if (response) return response;
+        return fetch(event.request).then(response => {
+          if (!response || response.status !== 200 || response.type !== 'basic') {
+            return response;
+          }
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseToCache);
+          });
+          return response;
+        });
+      })
+  );
 });
