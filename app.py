@@ -53,6 +53,21 @@ st.components.v1.html(pwa_html, height=0)
 
 
 # ============================================================
+# ESCONDER MENU E RODAPÉ DO STREAMLIT
+# ============================================================
+
+hide_streamlit_style = """
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+</style>
+"""
+
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+
+# ============================================================
 # FUNÇÕES DE ARQUIVO
 # ============================================================
 
