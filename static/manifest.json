@@ -4,7 +4,7 @@
   "description": "Assistente academica para pesquisa, resolucao, revisao, originalidade e analise de IA",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0e1117",
+  "background_color":="#0e1117",
   "theme_color": "#1a1a2e",
   "orientation": "portrait-primary",
   "icons": [
