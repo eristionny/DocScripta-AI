@@ -24,8 +24,32 @@ from ia_detector import (
 st.set_page_config(
     page_title="DocScripta AI",
     page_icon="📚",
-    layout="wide"
+    layout="wide",
+    menu_items={
+        "About": "DocScripta AI — Assistente acadêmico inteligente"
+    }
 )
+
+
+# ============================================================
+# PWA — LINKS PARA MANIFEST E SERVICE WORKER
+# ============================================================
+
+pwa_html = """
+<link rel="manifest" href="/static/manifest.json">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DocScripta AI">
+<link rel="apple-touch-icon" href="/static/tonnybot-192.png">
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/static/sw.js');
+}
+</script>
+"""
+
+st.components.v1.html(pwa_html, height=0)
 
 
 # ============================================================
@@ -695,10 +719,6 @@ VALORES_INICIAIS = {
     "historico_ia": [],
     "trecho_revisao_ia": "",
     "indice_trecho_revisao_ia": None,
-
-    # REESCREVER TEXTO
-    "reescrever_key": 0,
-    "texto_reescrito_resultado": None,
 }
 
 
@@ -739,13 +759,33 @@ def atualizar_editor_ia():
 # CABEÇALHO
 # ============================================================
 
-st.title(
-    "📚 DocScripta AI"
-)
+# ============================================================
+# TONNYBOT + TÍTULO
+# ============================================================
 
-st.caption(
-    "Assistente acadêmico para pesquisa, resolução, "
-    "revisão, originalidade e análise de IA."
+col_tonny, col_titulo = st.columns([1, 5])
+
+with col_tonny:
+    try:
+        st.image(
+            "tonnybot.png",
+            width=140
+        )
+    except Exception:
+        st.image(
+            "https://raw.githubusercontent.com/eristionny/DocScripta-AI/main/tonnybot.png",
+            width=140
+        )
+
+with col_titulo:
+    st.title("📚 DocScripta AI")
+    st.caption(
+        "Assistente acadêmico para pesquisa, resolução, "
+        "revisão, originalidade e análise de IA."
+    )
+
+st.markdown(
+    "**Criado por: Eristionny** 🤖"
 )
 
 
@@ -2771,16 +2811,10 @@ with aba_reescrever:
         "e as informações importantes."
     )
 
-    # ------------------------------------------------
-    # KEYS DINÂMICAS (para permitir limpeza)
-    # ------------------------------------------------
-
-    rk = st.session_state.reescrever_key
-
     texto_reescrever = st.text_area(
         "Cole aqui o texto que deseja reescrever:",
         height=300,
-        key=f"texto_reescrever_{rk}"
+        key="texto_reescrever"
     )
 
     tom_reescrever = st.selectbox(
@@ -2799,7 +2833,7 @@ with aba_reescrever:
             "criativo": "✨ Criativo",
             "profissional": "💼 Profissional"
         }[x],
-        key=f"tom_reescrever_{rk}"
+        key="tom_reescrever"
     )
 
     nivel_reescrever = st.selectbox(
@@ -2814,34 +2848,14 @@ with aba_reescrever:
             "medio": "🟡 Médio — reestruturação das frases",
             "forte": "🔴 Forte — reescrita completa"
         }[x],
-        key=f"nivel_reescrever_{rk}"
+        key="nivel_reescrever"
     )
 
-    col_reescrever, col_limpar_reescrever = st.columns(2)
-
-    with col_reescrever:
-
-        btn_reescrever = st.button(
-            "✏️ REESCREVER TEXTO",
-            type="primary",
-            use_container_width=True
-        )
-
-    with col_limpar_reescrever:
-
-        btn_limpar_reescrever = st.button(
-            "🧹 LIMPAR",
-            use_container_width=True
-        )
-
-    if btn_limpar_reescrever:
-
-        st.session_state.texto_reescrito_resultado = None
-
-        # Incrementa a key para forçar recriação dos widgets vazios
-        st.session_state.reescrever_key += 1
-
-        st.rerun()
+    btn_reescrever = st.button(
+        "✏️ REESCREVER TEXTO",
+        type="primary",
+        use_container_width=True
+    )
 
     if btn_reescrever:
 
