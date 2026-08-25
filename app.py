@@ -212,6 +212,8 @@ def aplicar_tema():
         opacity: 0.85 !important;
     }}
 
+    /* === BOTÃO TONNYBOT (tema toggle) — estilizado via JS === */
+
     /* === PRIMARY BUTTON === */
     .stButton > button[kind="primary"] {{
         background-color: {cor_accent} !important;
@@ -1089,6 +1091,42 @@ def atualizar_editor_ia():
 col_tonny, col_titulo = st.columns([1, 5])
 
 with col_tonny:
+    tema_atual = st.session_state.get("theme_mode", "dark")
+    emoji_tema = "🌙" if tema_atual == "dark" else "☀️"
+    hint_tema = "Tocar para mudar p/ modo claro ☀️" if tema_atual == "dark" else "Tocar para mudar p/ modo escuro 🌙"
+
+    # Botão para trocar tema ao tocar no robô
+    if st.button(
+        f"🤖 {emoji_tema}",
+        key="btn_tonny_tema",
+        help=hint_tema,
+        use_container_width=True
+    ):
+        st.session_state.theme_mode = "light" if tema_atual == "dark" else "dark"
+        st.rerun()
+
+    # JS: estilizar o botão do tonnybot (transparente, borda tracejada)
+    st.markdown('''
+    <script>
+    (function() {
+        var btns = window.parent.document.querySelectorAll('button');
+        btns.forEach(function(b) {
+            if (b.textContent.includes('🤖')) {
+                b.style.background = 'transparent';
+                b.style.border = '2px dashed #5b6abf';
+                b.style.borderRadius = '12px';
+                b.style.fontSize = '1.5rem';
+                b.style.padding = '0.2rem 0.5rem';
+                b.style.boxShadow = 'none';
+                b.style.minHeight = '0';
+                b.style.lineHeight = '1.2';
+                b.style.cursor = 'pointer';
+            }
+        });
+    })();
+    </script>
+    ''', unsafe_allow_html=True)
+
     try:
         st.image(
             "tonnybot.png",
