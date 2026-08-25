@@ -37,7 +37,7 @@ st.set_page_config(
 
 pwa_html = """
 <link rel="manifest" href="/static/manifest.json">
-<meta name="theme-color" content="" id="pwa-theme-color">
+<meta name="theme-color" content="#1a1a2e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="DocScripta AI">
@@ -53,325 +53,18 @@ st.components.v1.html(pwa_html, height=0)
 
 
 # ============================================================
-# TOGGLE DE TEMA — CLARO / ESCURO
+# ESCONDER MENU E RODAPÉ DO STREAMLIT
 # ============================================================
 
-def aplicar_tema():
-    tema = st.session_state.get("theme_mode", "dark")
+hide_streamlit_style = """
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+</style>
+"""
 
-    if tema == "dark":
-        cor_fundo = "#0e1117"
-        cor_fundo_secundario = "#1a1a2e"
-        cor_texto = "#fafafa"
-        cor_texto_secundario = "#a0a0b0"
-        cor_accent = "#5b6abf"
-        cor_card = "#1e1e30"
-        cor_borda = "#2a2a40"
-        cor_sucesso = "#d1fae5"
-        cor_sucesso_texto = "#065f46"
-        cor_warn = "#fef3c7"
-        cor_warn_texto = "#92400e"
-        cor_info = "#dbeafe"
-        cor_info_texto = "#1e40af"
-        cor_botao = "#5b6abf"
-        cor_botao_texto = "#ffffff"
-        cor_input_bg = "#1a1a2e"
-        cor_input_text = "#fafafa"
-        cor_input_borda = "#2a2a40"
-        pwa_color = "#0e1117"
-    else:
-        cor_fundo = "#ffffff"
-        cor_fundo_secundario = "#f0f2f6"
-        cor_texto = "#1a1a2e"
-        cor_texto_secundario = "#555570"
-        cor_accent = "#4a59a0"
-        cor_card = "#f7f8fa"
-        cor_borda = "#e0e0e8"
-        cor_sucesso = "#d1fae5"
-        cor_sucesso_texto = "#065f46"
-        cor_warn = "#fef3c7"
-        cor_warn_texto = "#92400e"
-        cor_info = "#dbeafe"
-        cor_info_texto = "#1e40af"
-        cor_botao = "#4a59a0"
-        cor_botao_texto = "#ffffff"
-        cor_input_bg = "#ffffff"
-        cor_input_text = "#1a1a2e"
-        cor_input_borda = "#d0d0d8"
-        pwa_color = "#ffffff"
-
-    tema_css = f"""    <style>
-
-    /* === ESCONDER STREAMLIT === */
-    #MainMenu {{visibility: hidden;}}
-    header {{visibility: hidden;}}
-
-    /* --- RODAPÉ: ocultar TUDO (links, badge, ícone) --- */
-    footer {{
-        visibility: hidden !important;
-        display: none !important;
-        height: 0 !important;
-        min-height: 0 !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        overflow: hidden !important;
-    }}
-    [data-testid="stFooter"] {{
-        visibility: hidden !important;
-        display: none !important;
-        height: 0 !important;
-    }}
-    .stApp > footer {{
-        visibility: hidden !important;
-        display: none !important;
-        height: 0 !important;
-    }}
-    [class*="stAppView"] > footer {{
-        visibility: hidden !important;
-        display: none !important;
-    }}
-    [class*="embedded"] footer {{
-        visibility: hidden !important;
-        display: none !important;
-    }}
-    /* --- Badge "Made with Streamlit" + link GitHub --- */
-    [data-testid="stViewerBadge"] {{
-        visibility: hidden !important;
-        display: none !important;
-    }}
-    .viewerBadge_link {{
-        visibility: hidden !important;
-        display: none !important;
-    }}
-    a[href*="share.streamlit.io"],
-    a[href*="github.com"],
-    a[href*="streamlit.io/cloud"] {{
-        visibility: hidden !important;
-        display: none !important;
-        font-size: 0 !important;
-        height: 0 !important;
-        overflow: hidden !important;
-    }}
-    /* --- Remover espaço residual do rodapé --- */
-    .stAppViewLayout > div:last-child {{
-        height: 0 !important;
-        min-height: 0 !important;
-    }}
-    .main.block-container {{
-        padding-bottom: 1rem !important;
-    }}
-
-    /* === FUNDO GLOBAL === */
-    .stApp {{
-        background-color: {cor_fundo} !important;
-        color: {cor_texto} !important;
-    }}
-
-    /* === SIDEBAR === */
-    section[data-testid="stSidebar"] {{
-        background-color: {cor_fundo_secundario} !important;
-    }}
-
-    /* === TEXTO E TÍTULOS === */
-    .stMarkdown, .stText, p, span {{
-        color: {cor_texto} !important;
-    }}
-
-    h1, h2, h3, h4, h5, h6 {{
-        color: {cor_texto} !important;
-    }}
-
-    /* === CAPTIONS === */
-    .stCaption {{
-        color: {cor_texto_secundario} !important;
-    }}
-
-    /* === INPUTS / TEXT AREAS === */
-    .stTextInput > div > div > input,
-    .stTextArea > div > div > textarea {{
-        background-color: {cor_input_bg} !important;
-        color: {cor_input_text} !important;
-        border-color: {cor_input_borda} !important;
-    }}
-
-    /* === SELECTBOX / RADIO === */
-    .stSelectbox > div > div,
-    .stRadio > div {{
-        color: {cor_texto} !important;
-    }}
-
-    /* === BOTÕES === */
-    .stButton > button {{
-        background-color: {cor_botao} !important;
-        color: {cor_botao_texto} !important;
-        border-color: {cor_accent} !important;
-        border-radius: 8px !important;
-    }}
-
-    .stButton > button:hover {{
-        opacity: 0.85 !important;
-    }}
-
-    /* === BOTÃO TONNYBOT (tema toggle) — estilizado via JS === */
-
-    /* === PRIMARY BUTTON === */
-    .stButton > button[kind="primary"] {{
-        background-color: {cor_accent} !important;
-        color: #ffffff !important;
-        border-color: {cor_accent} !important;
-    }}
-
-    /* === CARDS / EXPANDERS === */
-    .stExpander > details {{
-        background-color: {cor_card} !important;
-        border-color: {cor_borda} !important;
-    }}
-
-    .stExpander > details > summary {{
-        color: {cor_texto} !important;
-    }}
-
-    .stExpander > details > div {{
-        color: {cor_texto} !important;
-    }}
-
-    /* === METRICS === */
-    [data-testid="stMetricValue"] {{
-        color: {cor_texto} !important;
-    }}
-
-    [data-testid="stMetricLabel"] {{
-        color: {cor_texto_secundario} !important;
-    }}
-
-    /* === DOWNLOAD BUTTON === */
-    .stDownloadButton > button {{
-        background-color: {cor_accent} !important;
-        color: #ffffff !important;
-        border-color: {cor_accent} !important;
-    }}
-
-    /* === SLIDER === */
-    .stSlider {{
-        color: {cor_texto} !important;
-    }}
-
-    /* === CHECKBOX === */
-    .stCheckbox {{
-        color: {cor_texto} !important;
-    }}
-
-    /* === FORM === */
-    .stForm {{
-        background-color: {cor_fundo_secundario} !important;
-        border-color: {cor_borda} !important;
-    }}
-
-    /* === DIVIDER === */
-    .stDivider {{
-        border-color: {cor_borda} !important;
-    }}
-
-    /* === SUCCESS / WARNING / ERROR / INFO === */
-    .stSuccess {{
-        background-color: {cor_sucesso} !important;
-        color: {cor_sucesso_texto} !important;
-    }}
-
-    .stWarning {{
-        background-color: {cor_warn} !important;
-        color: {cor_warn_texto} !important;
-    }}
-
-    .stInfo {{
-        background-color: {cor_info} !important;
-        color: {cor_info_texto} !important;
-    }}
-
-    .stError {{
-        background-color: #fde8e8 !important;
-        color: #9b1c1c !important;
-    }}
-
-    /* === CODE BLOCKS === */
-    .stCodeBlock {{
-        background-color: {cor_fundo_secundario} !important;
-    }}
-
-    /* === TABS === */
-    .stTabs [data-baseweb="tab-list"] button {{
-        color: {cor_texto_secundario} !important;
-    }}
-
-    .stTabs [data-baseweb="tab-list"] button[aria-selected="true"] {{
-        color: {cor_texto} !important;
-        border-color: {cor_accent} !important;
-    }}
-
-    /* === FILE UPLOADER === */
-    .stFileUploader > div {{
-        border-color: {cor_borda} !important;
-        background-color: {cor_card} !important;
-    }}
-
-    /* === SCROLLBAR === */
-    ::-webkit-scrollbar {{
-        width: 8px;
-    }}
-
-    ::-webkit-scrollbar-track {{
-        background: {cor_fundo_secundario};
-    }}
-
-    ::-webkit-scrollbar-thumb {{
-        background: {cor_borda};
-        border-radius: 4px;
-    }}
-
-    </style>
-
-    <script>
-    try {{
-        var meta = document.getElementById('pwa-theme-color');
-        if (meta) {{
-            meta.setAttribute('content', '{pwa_color}');
-        }}
-    }} catch(e) {{}}
-    </script>
-    """
-
-    st.markdown(tema_css, unsafe_allow_html=True)
-
-
-# ============================================================
-# SIDEBAR — TOGGLE DE TEMA
-# ============================================================
-
-with st.sidebar:
-    st.markdown("⚙️ **Configurações**")
-    st.markdown("---")
-
-    tema_atual = st.session_state.get("theme_mode", "dark")
-
-    novo_tema = st.radio(
-        "Tema da interface:",
-        options=["dark", "light"],
-        format_func=lambda x: "🌙 Escuro" if x == "dark" else "☀️ Claro",
-        index=0 if tema_atual == "dark" else 1,
-        key="toggle_tema"
-    )
-
-    if novo_tema != tema_atual:
-        st.session_state.theme_mode = novo_tema
-        st.rerun()
-
-    st.markdown("---")
-    st.caption("DocScripta AI v1.0")
-    st.caption("Criado por: Eristionny 🤖")
-
-
-# Aplica o tema CSS
-aplicar_tema()
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
 # ============================================================
@@ -1041,9 +734,6 @@ VALORES_INICIAIS = {
     "historico_ia": [],
     "trecho_revisao_ia": "",
     "indice_trecho_revisao_ia": None,
-
-    # TEMA
-    "theme_mode": "dark",
 }
 
 
@@ -1091,42 +781,6 @@ def atualizar_editor_ia():
 col_tonny, col_titulo = st.columns([1, 5])
 
 with col_tonny:
-    tema_atual = st.session_state.get("theme_mode", "dark")
-    emoji_tema = "🌙" if tema_atual == "dark" else "☀️"
-    hint_tema = "Tocar para mudar p/ modo claro ☀️" if tema_atual == "dark" else "Tocar para mudar p/ modo escuro 🌙"
-
-    # Botão para trocar tema ao tocar no robô
-    if st.button(
-        f"🤖 {emoji_tema}",
-        key="btn_tonny_tema",
-        help=hint_tema,
-        use_container_width=True
-    ):
-        st.session_state.theme_mode = "light" if tema_atual == "dark" else "dark"
-        st.rerun()
-
-    # JS: estilizar o botão do tonnybot (transparente, borda tracejada)
-    st.markdown('''
-    <script>
-    (function() {
-        var btns = window.parent.document.querySelectorAll('button');
-        btns.forEach(function(b) {
-            if (b.textContent.includes('🤖')) {
-                b.style.background = 'transparent';
-                b.style.border = '2px dashed #5b6abf';
-                b.style.borderRadius = '12px';
-                b.style.fontSize = '1.5rem';
-                b.style.padding = '0.2rem 0.5rem';
-                b.style.boxShadow = 'none';
-                b.style.minHeight = '0';
-                b.style.lineHeight = '1.2';
-                b.style.cursor = 'pointer';
-            }
-        });
-    })();
-    </script>
-    ''', unsafe_allow_html=True)
-
     try:
         st.image(
             "tonnybot.png",
@@ -1145,7 +799,9 @@ with col_titulo:
         "revisão, originalidade e análise de IA."
     )
 
-# "Criado por" movido para sidebar
+st.markdown(
+    "**Criado por: Eristionny** 🤖"
+)
 
 
 # ============================================================
