@@ -2580,7 +2580,7 @@ REFERÊNCIA:
             label_visibility="collapsed",
             value=texto_documento_final,
             height=350,
-            disabled=True,
+            disabled=False,
             key="visualizacao_documento_atual"
         )
         label_tema("Conteúdo atual:", margem_top="-0.5rem")
@@ -3215,7 +3215,7 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
                         label_visibility="collapsed",
                         value=texto_trecho_ia,
                         height=180,
-                        disabled=True,
+                        disabled=False,
                         key="trecho_original_ia"
                     )
                     label_tema("Trecho original:", margem_top="-0.5rem")
@@ -3229,7 +3229,7 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
                             st.session_state.texto_revisao_ia
                         ),
                         height=180,
-                        disabled=True,
+                        disabled=False,
                         key="trecho_novo_ia"
                     )
                     label_tema("Nova versão:", margem_top="-0.5rem")
@@ -3309,7 +3309,7 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
                 st.session_state.texto_analise_ia
             ),
             height=350,
-            disabled=True,
+            disabled=False,
             key="documento_atual_ia"
         )
         label_tema("Texto atual:", margem_top="-0.5rem")
