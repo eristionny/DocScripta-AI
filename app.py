@@ -228,8 +228,80 @@ def aplicar_tema():
         background-color: {cor_fundo} !important;
     }}
 
-    /* === TEXTO E TÍTULOS === */
-    .stMarkdown, .stText, p, span, label {{
+    /* === CSS CUSTOM PROPERTIES (nuclear override) === */
+    :root {{
+        --st-text-color: {cor_texto} !important;
+        --st-secondary-text-color: {cor_texto_secundario} !important;
+    }}
+
+    /* === TEXTO E TÍTULOS — NUCLEAR OVERRIDE === */
+    /* Abordagem em camadas: do mais amplo ao mais específico */
+
+    /* Camada 1: Seletor amplo para TODOS os elementos de texto */
+    .stMarkdown, .stText, p, span, label,
+    strong, em, small, b, i, a, li, td, th, dd, dt,
+    figcaption, blockquote, pre, code, h1, h2, h3, h4, h5, h6 {{
+        color: {cor_texto} !important;
+    }}
+
+    /* Camada 2: Seletores com data-testid (Streamlit internals) */
+    [data-testid="stTextArea"] label,
+    [data-testid="stTextInput"] label,
+    [data-testid="stTextArea"] .stMarkdown,
+    [data-testid="stTextInput"] .stMarkdown,
+    [data-testid="stTextArea"] p,
+    [data-testid="stTextInput"] p,
+    [data-testid="stTextArea"] span,
+    [data-testid="stTextInput"] span,
+    [data-testid="stNumberInput"] label,
+    [data-testid="stSelectbox"] label,
+    [data-testid="stCheckbox"] label,
+    [data-testid="stRadio"] label,
+    [data-testid="stSlider"] label,
+    [data-testid="stDateInput"] label,
+    [data-testid="stTimeInput"] label,
+    [data-testid="stColorPicker"] label,
+    [data-testid="stMultiselect"] label,
+    [data-testid="stToggle"] label,
+    [data-testid="stCaption"],
+    [data-testid="stTooltip"] {{
+        color: {cor_texto} !important;
+    }}
+
+    /* Camada 3: Labels dentro de baseweb/form components */
+    [data-baseweb="form"] label,
+    [data-baseweb="form"] .stMarkdown,
+    [data-baseweb="form"] p,
+    [data-baseweb="form"] span,
+    div[class*="st-"] label,
+    div[data-testid] label,
+    div[data-testid] .stMarkdown,
+    div[data-testid] p,
+    div[data-testid] span {{
+        color: {cor_texto} !important;
+    }}
+
+    /* Camada 4: Todas as labels dentro de containers verticais/horizontais */
+    [data-testid="stVerticalBlock"] label,
+    [data-testid="stVerticalBlock"] .stMarkdown,
+    [data-testid="stVerticalBlock"] p,
+    [data-testid="stVerticalBlock"] span,
+    [data-testid="stHorizontalBlock"] label,
+    [data-testid="stHorizontalBlock"] .stMarkdown,
+    [data-testid="stHorizontalBlock"] p,
+    [data-testid="stHorizontalBlock"] span,
+    .element-container label,
+    .element-container .stMarkdown,
+    .element-container p,
+    .element-container span {{
+        color: {cor_texto} !important;
+    }}
+
+    /* Camada 5: NUCLEAR — forçar cor em TODO elemento inline */
+    .stApp [data-testid="stAppViewContainer"] label[style],
+    .stApp [data-testid="stAppViewContainer"] span[style],
+    .stApp [data-testid="stAppViewContainer"] p[style],
+    .stApp [data-testid="stAppViewContainer"] div[style*="color"] {{
         color: {cor_texto} !important;
     }}
 
@@ -243,6 +315,16 @@ def aplicar_tema():
         color: {cor_texto_secundario} !important;
     }}
 
+    /* === SUBHEADERS (st.subheader) === */
+    [data-testid="stSubheader"],
+    [data-testid="stSubheader"] h3,
+    [data-testid="stSubheader"] p,
+    [data-testid="stSubheader"] span,
+    .stSubheader,
+    h3[data-testid] {{
+        color: {cor_texto} !important;
+    }}
+
     /* === INPUTS / TEXT AREAS === */
     .stTextInput > div > div > input,
     .stTextArea > div > div > textarea,
@@ -253,7 +335,35 @@ def aplicar_tema():
         border-color: {cor_input_borda} !important;
     }}
     .stTextInput label,
-    .stTextArea label {{
+    .stTextArea label,
+    [data-testid="stTextInput"] label,
+    [data-testid="stTextArea"] label,
+    [data-testid="stTextInput"] [data-baseweb="form"] label,
+    [data-testid="stTextArea"] [data-baseweb="form"] label,
+    [data-testid="stTextInput"] div label,
+    [data-testid="stTextArea"] div label,
+    .stTextInput div[data-testid] label,
+    .stTextArea div[data-testid] label,
+    .stTextInput [class*="st-"] label,
+    .stTextArea [class*="st-"] label {{
+        color: {cor_texto} !important;
+    }}
+    /* Labels de subcabeçalhos dentro de text areas (markdown headings) */
+    [data-testid="stTextArea"] h1,
+    [data-testid="stTextArea"] h2,
+    [data-testid="stTextArea"] h3,
+    [data-testid="stTextArea"] h4,
+    [data-testid="stTextInput"] h1,
+    [data-testid="stTextInput"] h2,
+    [data-testid="stTextInput"] h3,
+    [data-testid="stTextInput"] h4 {{
+        color: {cor_texto} !important;
+    }}
+    /* Texto descritivo/markdown dentro de input containers */
+    [data-testid="stTextArea"] [data-testid="stMarkdown"],
+    [data-testid="stTextInput"] [data-testid="stMarkdown"],
+    [data-testid="stTextArea"] .stMarkdown,
+    [data-testid="stTextInput"] .stMarkdown {{
         color: {cor_texto} !important;
     }}
 
@@ -449,9 +559,42 @@ def aplicar_tema():
         background-color: {cor_fundo} !important;
         color: {cor_texto} !important;
     }}
-    /* Texto dentro dos painéis de abas */
+    /* Texto dentro dos painéis de abas — NUCLEAR override */
     .stTabs [data-baseweb="tab-panel"] *,
     [data-testid="stTabs"] .stTabPanel * {{
+        color: {cor_texto} !important;
+    }}
+    /* Override inline styles color dentro dos painéis */
+    .stTabs [data-baseweb="tab-panel"] *[style*="color"],
+    [data-testid="stTabs"] .stTabPanel *[style*="color"] {{
+        color: {cor_texto} !important;
+    }}
+    /* Labels específicos dentro dos painéis de abas */
+    .stTabs [data-baseweb="tab-panel"] label[style],
+    .stTabs [data-baseweb="tab-panel"] span[style],
+    .stTabs [data-baseweb="tab-panel"] p[style],
+    .stTabs [data-baseweb="tab-panel"] h3[style],
+    .stTabs [data-baseweb="tab-panel"] h2[style],
+    [data-testid="stTabs"] .stTabPanel label[style],
+    [data-testid="stTabs"] .stTabPanel span[style],
+    [data-testid="stTabs"] .stTabPanel p[style],
+    [data-testid="stTabs"] .stTabPanel h3[style] {{
+        color: {cor_texto} !important;
+    }}
+    /* Subheaders dentro dos painéis de abas */
+    .stTabs [data-baseweb="tab-panel"] [data-testid="stSubheader"],
+    .stTabs [data-baseweb="tab-panel"] [data-testid="stSubheader"] *,
+    [data-testid="stTabs"] .stTabPanel [data-testid="stSubheader"],
+    [data-testid="stTabs"] .stTabPanel [data-testid="stSubheader"] * {{
+        color: {cor_texto} !important;
+    }}
+    /* Text area labels dentro dos painéis de abas */
+    .stTabs [data-baseweb="tab-panel"] [data-testid="stTextArea"] label,
+    .stTabs [data-baseweb="tab-panel"] [data-testid="stTextArea"] .stMarkdown,
+    .stTabs [data-baseweb="tab-panel"] [data-testid="stTextInput"] label,
+    .stTabs [data-baseweb="tab-panel"] [data-testid="stTextInput"] .stMarkdown,
+    [data-testid="stTabs"] .stTabPanel [data-testid="stTextArea"] label,
+    [data-testid="stTabs"] .stTabPanel [data-testid="stTextInput"] label {{
         color: {cor_texto} !important;
     }}
     /* Mas botões e links mantêm suas cores */
@@ -563,6 +706,51 @@ def aplicar_tema():
         }}
     }} catch(e) {{}}
     </script>
+
+    <!-- JavaScript nuclear — força cor de texto em labels Streamlit -->
+    <script>
+    (function() {{
+        var textColor = '{cor_texto}';
+        var secColor = '{cor_texto_secundario}';
+        function fixColors() {{
+            var allLabels = document.querySelectorAll('label, [data-testid="stSubheader"], [data-testid="stCaption"]');
+            allLabels.forEach(function(el) {{
+                el.style.color = textColor;
+                el.style.setProperty('color', textColor, 'important');
+                // Filhos diretos de texto
+                var children = el.querySelectorAll('span, p, h3, h4, div');
+                children.forEach(function(child) {{
+                    child.style.setProperty('color', textColor, 'important');
+                }});
+            }});
+            // Subheaders (st.subheader)
+            var subs = document.querySelectorAll('[data-testid="stSubheader"] h3, [data-testid="stSubheader"]');
+            subs.forEach(function(el) {{
+                el.style.setProperty('color', textColor, 'important');
+            }});
+            // TextArea labels
+            var taLabels = document.querySelectorAll('[data-testid="stTextArea"] label, [data-testid="stTextInput"] label');
+            taLabels.forEach(function(el) {{
+                el.style.setProperty('color', textColor, 'important');
+            }});
+        }}
+        // Executa na carga e periodicamente (Streamlit re-renderiza)
+        if (document.readyState === 'loading') {{
+            document.addEventListener('DOMContentLoaded', function() {{
+                setTimeout(fixColors, 500);
+                setTimeout(fixColors, 1500);
+            }});
+        }} else {{
+            setTimeout(fixColors, 500);
+            setTimeout(fixColors, 1500);
+        }}
+        // MutationObserver para capturar elementos dinâmicos
+        var observer = new MutationObserver(function() {{
+            setTimeout(fixColors, 100);
+        }});
+        observer.observe(document.body, {{ childList: true, subtree: true }});
+    }})();
+    </script>
     """
 
     st.markdown(tema_css, unsafe_allow_html=True)
@@ -592,7 +780,6 @@ with st.sidebar:
 
     st.markdown("---")
     st.caption("DocScripta AI v1.0")
-    st.caption("Criado por: Eristionny 🤖")
 
 
 # Aplica o tema CSS
@@ -1364,8 +1551,9 @@ with col_titulo:
         "Assistente acadêmico para pesquisa, resolução, "
         "revisão, originalidade e análise de IA."
     )
-
-# "Criado por" movido para sidebar
+    st.caption(
+        "Criado por: Eristionny 🤖"
+    )
 
 
 # ============================================================
