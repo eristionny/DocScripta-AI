@@ -119,7 +119,7 @@ def aplicar_tema():
 
     /* === ESCONDER STREAMLIT === */
     #MainMenu {{visibility: hidden;}}
-    header {{visibility: hidden;}}
+    [data-testid="stHeader"] {{visibility: hidden; height: 0 !important; min-height: 0 !important;}}
 
     /* --- RODAPÉ: ocultar TUDO (links, badge, ícone) --- */
     footer {{
@@ -200,7 +200,10 @@ def aplicar_tema():
     [data-testid="stSidebar"] label,
     [data-testid="stSidebar"] .stMarkdown,
     [data-testid="stSidebar"] p,
-    [data-testid="stSidebar"] span {{
+    [data-testid="stSidebar"] span,
+    [data-testid="stSidebar"] .stCaption,
+    [data-testid="stSidebar"] [data-testid="stCaption"],
+    [data-testid="stSidebar"] small {{
         color: {cor_texto} !important;
     }}
     [data-testid="stSidebar"] .stRadio div[role="radiogroup"] label {{
@@ -208,6 +211,14 @@ def aplicar_tema():
     }}
     [data-testid="stSidebar"] .stRadio div[role="radiogroup"] label[data-checked="true"] {{
         color: {cor_accent} !important;
+    }}
+    /* Sidebar — inputs/selectbox */
+    [data-testid="stSidebar"] input,
+    [data-testid="stSidebar"] select,
+    [data-testid="stSidebar"] textarea {{
+        background-color: {cor_input_bg} !important;
+        color: {cor_input_text} !important;
+        border-color: {cor_input_borda} !important;
     }}
 
     /* === CONTAINER PRINCIPAL === */
@@ -297,20 +308,60 @@ def aplicar_tema():
     /* === CARDS / EXPANDERS === */
     .stExpander,
     .stExpander > details,
-    [data-testid="stExpander"] {{
+    [data-testid="stExpander"],
+    [data-testid="stExpander"] details {{
         background-color: {cor_card} !important;
         border-color: {cor_borda} !important;
+        color: {cor_texto} !important;
     }}
 
+    .stExpander summary,
     .stExpander > details > summary,
-    [data-testid="stExpander"] summary {{
+    [data-testid="stExpander"] summary,
+    [data-testid="stExpander"] details > summary {{
         color: {cor_texto} !important;
+        background-color: {cor_card} !important;
     }}
 
     .stExpander > details > div,
-    [data-testid="stExpander"] .stExpanderContents {{
+    .stExpander > details > div *,
+    [data-testid="stExpander"] .stExpanderContents,
+    [data-testid="stExpander"] details > div,
+    [data-testid="stExpander"] details > div * {{
         color: {cor_texto} !important;
         background-color: {cor_card} !important;
+    }}
+
+    /* Expandador — textos internos */
+    .stExpander p,
+    .stExpander span,
+    .stExpander label,
+    .stExpander .stMarkdown,
+    .stExpander strong,
+    .stExpander em,
+    .stExpander a,
+    [data-testid="stExpander"] p,
+    [data-testid="stExpander"] span,
+    [data-testid="stExpander"] label,
+    [data-testid="stExpander"] .stMarkdown,
+    [data-testid="stExpander"] strong,
+    [data-testid="stExpander"] a {{
+        color: {cor_texto} !important;
+    }}
+
+    /* Expandador — info/success dentro */
+    .stExpander [data-testid="stInfo"],
+    .stExpander [data-testid="stSuccess"],
+    [data-testid="stExpander"] [data-testid="stInfo"],
+    [data-testid="stExpander"] [data-testid="stSuccess"] {{
+        background-color: {cor_info} !important;
+        color: {cor_info_texto} !important;
+    }}
+    .stExpander [data-testid="stInfo"] *,
+    .stExpander [data-testid="stSuccess"] *,
+    [data-testid="stExpander"] [data-testid="stInfo"] *,
+    [data-testid="stExpander"] [data-testid="stSuccess"] * {{
+        color: {cor_info_texto} !important;
     }}
 
     /* === METRICS === */
@@ -396,6 +447,44 @@ def aplicar_tema():
     .stTabs [data-baseweb="tab-panel"],
     [data-testid="stTabs"] .stTabPanel {{
         background-color: {cor_fundo} !important;
+        color: {cor_texto} !important;
+    }}
+    /* Texto dentro dos painéis de abas */
+    .stTabs [data-baseweb="tab-panel"] *,
+    [data-testid="stTabs"] .stTabPanel * {{
+        color: {cor_texto} !important;
+    }}
+    /* Mas botões e links mantêm suas cores */
+    .stTabs [data-baseweb="tab-panel"] button,
+    [data-testid="stTabs"] .stTabPanel button {{
+        color: {cor_botao_texto} !important;
+    }}
+    .stTabs [data-baseweb="tab-panel"] a,
+    [data-testid="stTabs"] .stTabPanel a {{
+        color: {cor_accent} !important;
+    }}
+    /* Info/Success dentro dos painéis */
+    .stTabs [data-baseweb="tab-panel"] [data-testid="stInfo"],
+    .stTabs [data-baseweb="tab-panel"] [data-testid="stSuccess"],
+    [data-testid="stTabs"] .stTabPanel [data-testid="stInfo"],
+    [data-testid="stTabs"] .stTabPanel [data-testid="stSuccess"] {{
+        background-color: {cor_info} !important;
+        color: {cor_info_texto} !important;
+    }}
+    .stTabs [data-baseweb="tab-panel"] [data-testid="stInfo"] *,
+    .stTabs [data-baseweb="tab-panel"] [data-testid="stSuccess"] *,
+    [data-testid="stTabs"] .stTabPanel [data-testid="stInfo"] *,
+    [data-testid="stTabs"] .stTabPanel [data-testid="stSuccess"] * {{
+        color: {cor_info_texto} !important;
+    }}
+    .stTabs [data-baseweb="tab-panel"] [data-testid="stWarning"],
+    [data-testid="stTabs"] .stTabPanel [data-testid="stWarning"] {{
+        background-color: {cor_warn} !important;
+        color: {cor_warn_texto} !important;
+    }}
+    .stTabs [data-baseweb="tab-panel"] [data-testid="stWarning"] *,
+    [data-testid="stTabs"] .stTabPanel [data-testid="stWarning"] * {{
+        color: {cor_warn_texto} !important;
     }}
 
     /* === FILE UPLOADER === */
