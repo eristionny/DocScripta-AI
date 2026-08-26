@@ -766,8 +766,10 @@ with st.sidebar:
 
     tema_atual = st.session_state.get("theme_mode", "dark")
 
+    label_tema("Tema da interface:")
     novo_tema = st.radio(
-        "Tema da interface:",
+        label="Tema da interface:",
+        label_visibility="collapsed",
         options=["dark", "light"],
         format_func=lambda x: "🌙 Escuro" if x == "dark" else "☀️ Claro",
         index=0 if tema_atual == "dark" else 1,
@@ -784,6 +786,30 @@ with st.sidebar:
 
 # Aplica o tema CSS
 aplicar_tema()
+
+
+def label_tema(texto, tamanho="0.9rem", peso="400", margem_top="0rem", margem_bottom="0.25rem"):
+    """Exibe um label com a cor correta do tema atual."""
+    tema = st.session_state.get("theme_mode", "dark")
+    cor = "#1a1a2e" if tema == "light" else "#fafafa"
+    st.markdown(
+        f'<p style="color:{cor}; font-size:{tamanho}; font-weight:{peso}; '
+        f'margin-top:{margem_top}; margin-bottom:{margem_bottom}; '
+        f'font-family:Source Sans Pro, sans-serif;">{texto}</p>',
+        unsafe_allow_html=True
+    )
+
+
+def subheader_tema(texto):
+    """Exibe um subheader com a cor correta do tema atual."""
+    tema = st.session_state.get("theme_mode", "dark")
+    cor = "#1a1a2e" if tema == "light" else "#fafafa"
+    st.markdown(
+        f'<h3 style="color:{cor}; font-size:1.1rem; font-weight:600; '
+        f'margin-top:0.5rem; margin-bottom:0.25rem; '
+        f'font-family:Source Sans Pro, sans-serif;">{texto}</h3>',
+        unsafe_allow_html=True
+    )
 
 
 # ============================================================
@@ -1044,9 +1070,7 @@ def mostrar_resultado_ia(resultado):
         )
     )
 
-    st.subheader(
-        "🤖 Resultado da análise"
-    )
+    subheader_tema("🤖 Resultado da análise")
 
     col1, col2, col3 = st.columns(3)
 
@@ -1116,9 +1140,7 @@ def mostrar_resultado_ia(resultado):
         []
     )
 
-    st.subheader(
-        "🧠 Características observadas"
-    )
+    subheader_tema("🧠 Características observadas")
 
     if caracteristicas:
 
@@ -1146,9 +1168,7 @@ def mostrar_resultado_ia(resultado):
         )
     )
 
-    st.subheader(
-        "🔍 Trechos mais relevantes"
-    )
+    subheader_tema("🔍 Trechos mais relevantes")
 
     if not trechos:
 
@@ -1242,9 +1262,7 @@ def mostrar_resultado_ia(resultado):
 
     if mudancas:
 
-        st.subheader(
-            "⚠️ Mudanças de estilo"
-        )
+        subheader_tema("⚠️ Mudanças de estilo")
 
         for numero, mudanca in enumerate(
             mudancas,
@@ -1297,9 +1315,7 @@ def mostrar_resultado_ia(resultado):
 
     if distribuicao:
 
-        st.subheader(
-            "📊 Distribuição dos sinais"
-        )
+        subheader_tema("📊 Distribuição dos sinais")
 
         ordem = [
             "baixo",
@@ -1334,9 +1350,7 @@ def mostrar_resultado_ia(resultado):
 
     if concentracao:
 
-        st.subheader(
-            "📄 Concentração dos sinais"
-        )
+        subheader_tema("📄 Concentração dos sinais")
 
         st.write(
             concentracao
@@ -1353,9 +1367,7 @@ def mostrar_resultado_ia(resultado):
 
     if estatisticas:
 
-        st.subheader(
-            "📈 Estatísticas do texto"
-        )
+        subheader_tema("📈 Estatísticas do texto")
 
         col1, col2, col3 = st.columns(3)
 
@@ -1576,9 +1588,7 @@ aba_principal, aba_originalidade, aba_ia, aba_reescrever = st.tabs(
 
 with aba_principal:
 
-    st.subheader(
-        "Pesquisa e Resolução Acadêmica"
-    )
+    subheader_tema("Pesquisa e Resolução Acadêmica")
 
     st.write(
         "Digite uma pergunta, atividade, trabalho "
@@ -1606,12 +1616,14 @@ with aba_principal:
     ):
 
         prompt_texto = st.text_input(
-            "Digite o tema, pergunta ou comando:",
+            label="Digite o tema, pergunta ou comando:",
+            label_visibility="collapsed",
             key=chave_campo,
             placeholder=(
                 "Digite sua pergunta..."
             )
         )
+        label_tema("Digite o tema, pergunta ou comando:", margem_top="-0.5rem")
 
         # ----------------------------------------------------
         # BOTÕES
@@ -1708,13 +1720,15 @@ with aba_principal:
     ):
 
         arquivo = st.file_uploader(
-            "Escolha um PDF ou DOCX:",
+            label="Escolha um PDF ou DOCX:",
+            label_visibility="collapsed",
             type=[
                 "pdf",
                 "docx"
             ],
             key="arquivo_principal"
         )
+        label_tema("Escolha um PDF ou DOCX:", margem_top="-0.5rem")
 
         btn_arquivo = st.form_submit_button(
             "📖 Analisar Arquivo"
@@ -1766,9 +1780,7 @@ with aba_principal:
 
         st.divider()
 
-        st.subheader(
-            "📝 Resposta Gerada"
-        )
+        subheader_tema("📝 Resposta Gerada")
 
         st.markdown(
             st.session_state.resultado_texto
@@ -1827,18 +1839,18 @@ with aba_originalidade:
     # ARQUIVO
     # ========================================================
 
-    st.subheader(
-        "1. Documento"
-    )
+    subheader_tema("1. Documento")
 
     arquivo_originalidade = st.file_uploader(
-        "Enviar PDF/DOCX:",
+        label="Enviar PDF/DOCX:",
+        label_visibility="collapsed",
         type=[
             "pdf",
             "docx"
         ],
         key="arquivo_originalidade_novo"
     )
+    label_tema("Enviar PDF/DOCX:", margem_top="-0.5rem")
 
     if arquivo_originalidade:
 
@@ -1892,12 +1904,11 @@ with aba_originalidade:
     # EDITOR
     # ========================================================
 
-    st.markdown(
-        "### ✏️ Texto atual do documento"
-    )
+    subheader_tema("✏️ Texto atual do documento")
 
     texto_atual_editor = st.text_area(
-        "Edite o documento diretamente aqui:",
+        label="Edite o documento diretamente aqui:",
+        label_visibility="collapsed",
         value=(
             st.session_state.texto_documento_revisao
         ),
@@ -1911,6 +1922,7 @@ with aba_originalidade:
             "do seu trabalho."
         )
     )
+    label_tema("Edite o documento diretamente aqui:", margem_top="-0.5rem")
 
     st.session_state.texto_documento_revisao = (
         texto_atual_editor
@@ -1942,23 +1954,25 @@ with aba_originalidade:
     # CONFIGURAÇÃO
     # ========================================================
 
-    st.subheader(
-        "2. Configuração da análise"
-    )
+    subheader_tema("2. Configuração da análise")
 
+    label_tema("🔬 Pesquisar fontes no PubMed/NCBI")
     consultar_pubmed = st.checkbox(
-        "🔬 Pesquisar fontes no PubMed/NCBI",
+        label="🔬 Pesquisar fontes no PubMed/NCBI",
+        label_visibility="collapsed",
         value=True,
         key="consultar_pubmed"
     )
 
     quantidade_fontes = st.slider(
-        "Quantidade de fontes:",
+        label="Quantidade de fontes:",
+        label_visibility="collapsed",
         min_value=1,
         max_value=10,
         value=5,
         key="quantidade_fontes"
     )
+    label_tema("Quantidade de fontes:", margem_top="-0.5rem")
 
     # ========================================================
     # ANALISAR ORIGINALIDADE
@@ -2038,9 +2052,7 @@ with aba_originalidade:
 
         st.divider()
 
-        st.subheader(
-            "3. Resultado da análise"
-        )
+        subheader_tema("3. Resultado da análise")
 
         indice = resultado.get(
             "indice_maximo",
@@ -2106,9 +2118,7 @@ with aba_originalidade:
         # FONTES
         # ====================================================
 
-        st.subheader(
-            "📚 Fontes"
-        )
+        subheader_tema("📚 Fontes")
 
         for numero, fonte in enumerate(
             resultado.get(
@@ -2189,9 +2199,7 @@ with aba_originalidade:
         # TRECHOS DE ORIGINALIDADE
         # ====================================================
 
-        st.subheader(
-            "⚠️ Trechos para revisão"
-        )
+        subheader_tema("⚠️ Trechos para revisão")
 
         trechos_resultado = resultado.get(
             "trechos",
@@ -2266,9 +2274,7 @@ with aba_originalidade:
         # CITAÇÕES
         # ====================================================
 
-        st.subheader(
-            "📚 Possíveis citações"
-        )
+        subheader_tema("📚 Possíveis citações")
 
         citacoes_resultado = resultado.get(
             "citacoes",
@@ -2304,9 +2310,7 @@ with aba_originalidade:
 
             st.divider()
 
-            st.subheader(
-                "✍️ Revisar trecho"
-            )
+            subheader_tema("✍️ Revisar trecho")
 
             st.write(
                 f"**Fonte:** "
@@ -2317,9 +2321,11 @@ with aba_originalidade:
                 st.session_state.trecho_revisao
             )
 
+            label_tema("Escolha a forma de revisão:")
             modo = st.radio(
-                "Escolha a forma de revisão:",
-                [
+                label="Escolha a forma de revisão:",
+                label_visibility="collapsed",
+                options=[
                     "Reescrever academicamente",
                     "Simplificar a linguagem",
                     "Transformar em citação direta"
@@ -2559,29 +2565,27 @@ REFERÊNCIA:
 
         st.divider()
 
-        st.subheader(
-            "📄 Documento atual"
-        )
+        subheader_tema("📄 Documento atual")
 
         texto_documento_final = (
             st.session_state.texto_documento_revisao
         )
 
         st.text_area(
-            "Conteúdo atual:",
+            label="Conteúdo atual:",
+            label_visibility="collapsed",
             value=texto_documento_final,
             height=350,
             disabled=True,
             key="visualizacao_documento_atual"
         )
+        label_tema("Conteúdo atual:", margem_top="-0.5rem")
 
         # ====================================================
         # COPIAR
         # ====================================================
 
-        st.markdown(
-            "### 📋 Copiar documento atual"
-        )
+        subheader_tema("📋 Copiar documento atual")
 
         texto_js = (
             texto_documento_final
@@ -2688,9 +2692,7 @@ REFERÊNCIA:
         # REANALISAR
         # ====================================================
 
-        st.subheader(
-            "🔄 Reanalisar documento atual"
-        )
+        subheader_tema("🔄 Reanalisar documento atual")
 
         if st.button(
             "🔄 NOVA ANÁLISE DO DOCUMENTO",
@@ -2753,9 +2755,7 @@ REFERÊNCIA:
         # DOWNLOAD WORD
         # ====================================================
 
-        st.subheader(
-            "📥 Exportação"
-        )
+        subheader_tema("📥 Exportação")
 
         if texto_documento_final.strip():
 
@@ -2782,9 +2782,7 @@ REFERÊNCIA:
         # RELATÓRIO ORIGINALIDADE
         # ====================================================
 
-        st.subheader(
-            "📊 Relatório de Originalidade"
-        )
+        subheader_tema("📊 Relatório de Originalidade")
 
         if st.session_state.relatorio_originalidade:
 
@@ -2857,12 +2855,11 @@ with aba_ia:
     # TEXTO
     # ========================================================
 
-    st.subheader(
-        "1. Texto para análise"
-    )
+    subheader_tema("1. Texto para análise")
 
     texto_ia_editor = st.text_area(
-        "Digite ou cole o texto para análise:",
+        label="Digite ou cole o texto para análise:",
+        label_visibility="collapsed",
         value=(
             st.session_state.texto_analise_ia
         ),
@@ -2875,6 +2872,7 @@ with aba_ia:
             "Cole aqui o texto que deseja analisar."
         )
     )
+    label_tema("Digite ou cole o texto para análise:", margem_top="-0.5rem")
 
     st.session_state.texto_analise_ia = (
         texto_ia_editor
@@ -2885,13 +2883,15 @@ with aba_ia:
     # ========================================================
 
     arquivo_ia = st.file_uploader(
-        "Ou envie um PDF/DOCX:",
+        label="Ou envie um PDF/DOCX:",
+        label_visibility="collapsed",
         type=[
             "pdf",
             "docx"
         ],
         key="arquivo_ia"
     )
+    label_tema("Ou envie um PDF/DOCX:", margem_top="-0.5rem")
 
     if arquivo_ia:
 
@@ -3038,9 +3038,7 @@ with aba_ia:
 
             st.divider()
 
-            st.subheader(
-                "✍️ Revisão de redação"
-            )
+            subheader_tema("✍️ Revisão de redação")
 
             indice_selecionado = st.session_state.get(
                 "indice_trecho_revisao_ia"
@@ -3206,24 +3204,23 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
 
                 if st.session_state.texto_revisao_ia:
 
-                    st.markdown(
-                        "### ANTES"
-                    )
+                    subheader_tema("ANTES")
 
                     st.text_area(
-                        "Trecho original:",
+                        label="Trecho original:",
+                        label_visibility="collapsed",
                         value=texto_trecho_ia,
                         height=180,
                         disabled=True,
                         key="trecho_original_ia"
                     )
+                    label_tema("Trecho original:", margem_top="-0.5rem")
 
-                    st.markdown(
-                        "### DEPOIS"
-                    )
+                    subheader_tema("DEPOIS")
 
                     st.text_area(
-                        "Nova versão:",
+                        label="Nova versão:",
+                        label_visibility="collapsed",
                         value=(
                             st.session_state.texto_revisao_ia
                         ),
@@ -3231,6 +3228,7 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
                         disabled=True,
                         key="trecho_novo_ia"
                     )
+                    label_tema("Nova versão:", margem_top="-0.5rem")
 
                     col_a, col_b = st.columns(2)
 
@@ -3298,12 +3296,11 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
 
         st.divider()
 
-        st.subheader(
-            "📄 Documento atual"
-        )
+        subheader_tema("📄 Documento atual")
 
         st.text_area(
-            "Texto atual:",
+            label="Texto atual:",
+            label_visibility="collapsed",
             value=(
                 st.session_state.texto_analise_ia
             ),
@@ -3311,6 +3308,7 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
             disabled=True,
             key="documento_atual_ia"
         )
+        label_tema("Texto atual:", margem_top="-0.5rem")
 
         # ====================================================
         # REANALISAR
@@ -3501,9 +3499,7 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
         # RELATÓRIO
         # ====================================================
 
-        st.subheader(
-            "📊 Relatório da Análise de IA"
-        )
+        subheader_tema("📊 Relatório da Análise de IA")
 
         try:
 
@@ -3571,7 +3567,7 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
 
 with aba_reescrever:
 
-    st.subheader("✏️ Reescrever Texto")
+    subheader_tema("✏️ Reescrever Texto")
 
     st.write(
         "Reescreva seu texto mantendo o significado "
@@ -3579,14 +3575,17 @@ with aba_reescrever:
     )
 
     texto_reescrever = st.text_area(
-        "Cole aqui o texto que deseja reescrever:",
+        label="Cole aqui o texto que deseja reescrever:",
+        label_visibility="collapsed",
         height=300,
         key="texto_reescrever"
     )
+    label_tema("Cole aqui o texto que deseja reescrever:", margem_top="-0.5rem")
 
     tom_reescrever = st.selectbox(
-        "Escolha o tom:",
-        [
+        label="Escolha o tom:",
+        label_visibility="collapsed",
+        options=[
             "academico",
             "claro",
             "conciso",
@@ -3602,10 +3601,12 @@ with aba_reescrever:
         }[x],
         key="tom_reescrever"
     )
+    label_tema("Escolha o tom:", margem_top="-0.5rem")
 
     nivel_reescrever = st.selectbox(
-        "Quanto deseja alterar o texto?",
-        [
+        label="Quanto deseja alterar o texto?",
+        label_visibility="collapsed",
+        options=[
             "leve",
             "medio",
             "forte"
@@ -3617,6 +3618,7 @@ with aba_reescrever:
         }[x],
         key="nivel_reescrever"
     )
+    label_tema("Quanto deseja alterar o texto?", margem_top="-0.5rem")
 
     btn_reescrever = st.button(
         "✏️ REESCREVER TEXTO",
@@ -3670,20 +3672,20 @@ with aba_reescrever:
 
         st.markdown("---")
 
-        st.markdown(
-            "### 📄 Texto reescrito"
-        )
+        subheader_tema("📄 Texto reescrito")
 
         resultado_reescrito = st.session_state[
             "texto_reescrito_resultado"
         ]
 
         st.text_area(
-            "Resultado:",
+            label="Resultado:",
+            label_visibility="collapsed",
             value=resultado_reescrito,
             height=400,
             key="resultado_reescrito_visualizacao"
         )
+        label_tema("Resultado:", margem_top="-0.5rem")
 
         st.download_button(
             "⬇️ Baixar texto reescrito",
