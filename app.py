@@ -53,6 +53,19 @@ st.components.v1.html(pwa_html, height=0)
 
 
 # ============================================================
+# LER PARAM ?theme= DA URL (PARA TONNYBOT CLICÁVEL)
+# ============================================================
+
+try:
+    _url_theme = st.query_params.get("theme")
+    if _url_theme in ("light", "dark"):
+        if st.session_state.get("theme_mode", "dark") != _url_theme:
+            st.session_state.theme_mode = _url_theme
+except Exception:
+    pass
+
+
+# ============================================================
 # TOGGLE DE TEMA — CLARO / ESCURO
 # ============================================================
 
@@ -78,6 +91,7 @@ def aplicar_tema():
         cor_input_bg = "#1a1a2e"
         cor_input_text = "#fafafa"
         cor_input_borda = "#2a2a40"
+        cor_header = "#0e1117"
         pwa_color = "#0e1117"
     else:
         cor_fundo = "#ffffff"
@@ -98,6 +112,7 @@ def aplicar_tema():
         cor_input_bg = "#ffffff"
         cor_input_text = "#1a1a2e"
         cor_input_borda = "#d0d0d8"
+        cor_header = "#ffffff"
         pwa_color = "#ffffff"
 
     tema_css = f"""    <style>
@@ -169,13 +184,41 @@ def aplicar_tema():
         color: {cor_texto} !important;
     }}
 
+    /* === BARRA SUPERIOR (header oculto mas cor coerente) === */
+    [data-testid="stHeader"] {{
+        background-color: {cor_header} !important;
+    }}
+
     /* === SIDEBAR === */
     section[data-testid="stSidebar"] {{
         background-color: {cor_fundo_secundario} !important;
+        color: {cor_texto} !important;
+    }}
+    section[data-testid="stSidebar"] * {{
+        color: {cor_texto} !important;
+    }}
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] .stMarkdown,
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] span {{
+        color: {cor_texto} !important;
+    }}
+    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] label {{
+        color: {cor_texto} !important;
+    }}
+    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] label[data-checked="true"] {{
+        color: {cor_accent} !important;
+    }}
+
+    /* === CONTAINER PRINCIPAL === */
+    .main.block-container,
+    [data-testid="stAppViewContainer"],
+    .stAppViewContainer {{
+        background-color: {cor_fundo} !important;
     }}
 
     /* === TEXTO E TÍTULOS === */
-    .stMarkdown, .stText, p, span {{
+    .stMarkdown, .stText, p, span, label {{
         color: {cor_texto} !important;
     }}
 
@@ -184,16 +227,23 @@ def aplicar_tema():
     }}
 
     /* === CAPTIONS === */
-    .stCaption {{
+    .stCaption,
+    [data-testid="stCaption"] {{
         color: {cor_texto_secundario} !important;
     }}
 
     /* === INPUTS / TEXT AREAS === */
     .stTextInput > div > div > input,
-    .stTextArea > div > div > textarea {{
+    .stTextArea > div > div > textarea,
+    input[type="text"],
+    textarea {{
         background-color: {cor_input_bg} !important;
         color: {cor_input_text} !important;
         border-color: {cor_input_borda} !important;
+    }}
+    .stTextInput label,
+    .stTextArea label {{
+        color: {cor_texto} !important;
     }}
 
     /* === SELECTBOX / RADIO === */
@@ -201,20 +251,26 @@ def aplicar_tema():
     .stRadio > div {{
         color: {cor_texto} !important;
     }}
+    .stSelectbox label,
+    .stRadio label {{
+        color: {cor_texto} !important;
+    }}
 
     /* === BOTÕES === */
-    .stButton > button {{
+    .stButton > button,
+    button[kind="secondary"],
+    button[kind="primary"],
+    .stFormSubmitButton > button {{
         background-color: {cor_botao} !important;
         color: {cor_botao_texto} !important;
         border-color: {cor_accent} !important;
         border-radius: 8px !important;
     }}
 
-    .stButton > button:hover {{
+    .stButton > button:hover,
+    .stFormSubmitButton > button:hover {{
         opacity: 0.85 !important;
     }}
-
-    /* === BOTÃO TONNYBOT (tema toggle) — imagem clicável via HTML === */
 
     /* === PRIMARY BUTTON === */
     .stButton > button[kind="primary"] {{
@@ -223,22 +279,43 @@ def aplicar_tema():
         border-color: {cor_accent} !important;
     }}
 
+    /* === FORM CONTAINER + FILHOS === */
+    .stForm,
+    [data-testid="stForm"] {{
+        background-color: {cor_fundo_secundario} !important;
+        border-color: {cor_borda} !important;
+    }}
+    .stForm *,
+    [data-testid="stForm"] * {{
+        color: {cor_texto} !important;
+    }}
+    .stForm label,
+    .stForm .stMarkdown {{
+        color: {cor_texto} !important;
+    }}
+
     /* === CARDS / EXPANDERS === */
-    .stExpander > details {{
+    .stExpander,
+    .stExpander > details,
+    [data-testid="stExpander"] {{
         background-color: {cor_card} !important;
         border-color: {cor_borda} !important;
     }}
 
-    .stExpander > details > summary {{
+    .stExpander > details > summary,
+    [data-testid="stExpander"] summary {{
         color: {cor_texto} !important;
     }}
 
-    .stExpander > details > div {{
+    .stExpander > details > div,
+    [data-testid="stExpander"] .stExpanderContents {{
         color: {cor_texto} !important;
+        background-color: {cor_card} !important;
     }}
 
     /* === METRICS === */
-    [data-testid="stMetricValue"] {{
+    [data-testid="stMetricValue"],
+    [data-testid="stMetric"] {{
         color: {cor_texto} !important;
     }}
 
@@ -259,50 +336,56 @@ def aplicar_tema():
     }}
 
     /* === CHECKBOX === */
-    .stCheckbox {{
+    .stCheckbox,
+    [data-testid="stCheckbox"] {{
+        color: {cor_texto} !important;
+    }}
+    .stCheckbox label,
+    [data-testid="stCheckbox"] label {{
         color: {cor_texto} !important;
     }}
 
-    /* === FORM === */
-    .stForm {{
-        background-color: {cor_fundo_secundario} !important;
-        border-color: {cor_borda} !important;
-    }}
-
     /* === DIVIDER === */
-    .stDivider {{
+    .stDivider,
+    hr {{
         border-color: {cor_borda} !important;
     }}
 
     /* === SUCCESS / WARNING / ERROR / INFO === */
-    .stSuccess {{
+    .stSuccess,
+    [data-testid="stSuccess"] {{
         background-color: {cor_sucesso} !important;
         color: {cor_sucesso_texto} !important;
     }}
 
-    .stWarning {{
+    .stWarning,
+    [data-testid="stWarning"] {{
         background-color: {cor_warn} !important;
         color: {cor_warn_texto} !important;
     }}
 
-    .stInfo {{
+    .stInfo,
+    [data-testid="stInfo"] {{
         background-color: {cor_info} !important;
         color: {cor_info_texto} !important;
     }}
 
-    .stError {{
+    .stError,
+    [data-testid="stError"] {{
         background-color: #fde8e8 !important;
         color: #9b1c1c !important;
     }}
 
     /* === CODE BLOCKS === */
-    .stCodeBlock {{
+    .stCodeBlock,
+    [data-testid="stCodeBlock"] {{
         background-color: {cor_fundo_secundario} !important;
     }}
 
     /* === TABS === */
     .stTabs [data-baseweb="tab-list"] button {{
         color: {cor_texto_secundario} !important;
+        background-color: transparent !important;
     }}
 
     .stTabs [data-baseweb="tab-list"] button[aria-selected="true"] {{
@@ -310,10 +393,61 @@ def aplicar_tema():
         border-color: {cor_accent} !important;
     }}
 
+    .stTabs [data-baseweb="tab-panel"],
+    [data-testid="stTabs"] .stTabPanel {{
+        background-color: {cor_fundo} !important;
+    }}
+
     /* === FILE UPLOADER === */
-    .stFileUploader > div {{
+    .stFileUploader,
+    [data-testid="stFileUploader"] {{
         border-color: {cor_borda} !important;
         background-color: {cor_card} !important;
+    }}
+    .stFileUploader > div,
+    [data-testid="stFileUploader"] > div {{
+        border-color: {cor_borda} !important;
+        background-color: {cor_card} !important;
+    }}
+    .stFileUploader section,
+    .stFileUploader [data-testid="stFileUploaderDropzone"],
+    [data-testid="stFileUploader"] section,
+    [data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] {{
+        background-color: {cor_card} !important;
+        border-color: {cor_borda} !important;
+    }}
+    .stFileUploader label,
+    [data-testid="stFileUploader"] label {{
+        color: {cor_texto} !important;
+    }}
+    .stFileUploader span,
+    [data-testid="stFileUploader"] span {{
+        color: {cor_texto_secundario} !important;
+    }}
+
+    /* === TOAST / POPUP === */
+    [data-testid="stToast"] {{
+        background-color: {cor_card} !important;
+        color: {cor_texto} !important;
+    }}
+
+    /* === POPOVER === */
+    [data-testid="stPopover"] {{
+        background-color: {cor_card} !important;
+        color: {cor_texto} !important;
+    }}
+
+    /* === CONTAINERS / BLOCKS === */
+    .element-container,
+    [data-testid="stVerticalBlock"],
+    [data-testid="stHorizontalBlock"] {{
+        color: {cor_texto} !important;
+    }}
+
+    /* === DATAFRAME / TABLE === */
+    .stDataFrame,
+    [data-testid="stDataFrame"] {{
+        color: {cor_texto} !important;
     }}
 
     /* === SCROLLBAR === */
@@ -1057,19 +1191,6 @@ for chave, valor in VALORES_INICIAIS.items():
 
 
 # ============================================================
-# LER PARAMETRO ?theme= DA URL (TROCA DE TEMA VIA TONNYBOT)
-# ============================================================
-try:
-    params = st.query_params
-    if "theme" in params:
-        tema_url = params["theme"]
-        if tema_url in ("dark", "light"):
-            st.session_state.theme_mode = tema_url
-except Exception:
-    pass
-
-
-# ============================================================
 # ATUALIZA EDITOR ORIGINALIDADE
 # ============================================================
 
@@ -1108,16 +1229,22 @@ col_tonny, col_titulo = st.columns([1, 5])
 with col_tonny:
     tema_atual = st.session_state.get("theme_mode", "dark")
     emoji_tema = "🌙" if tema_atual == "dark" else "☀️"
-    dica = "Tocar p/ modo claro ☀️" if tema_atual == "dark" else "Tocar p/ modo escuro 🌙"
+    dica = (
+        "Tocar p/ modo claro ☀️"
+        if tema_atual == "dark"
+        else "Tocar p/ modo escuro 🌙"
+    )
     cor_borda = "#5b6abf" if tema_atual == "dark" else "#4a59a0"
     cor_txt = "#fafafa" if tema_atual == "dark" else "#1a1a2e"
-
-    # Imagem do robô como link clicável que troca o tema
-    # Ao tocar na imagem → recarrega a página com ?theme=light ou ?theme=dark
     novo_tema = "light" if tema_atual == "dark" else "dark"
+
+    # Robô clicável — link que recarrega NA MESMA ABA
+    # target="_self" garante que NÃO abre nova aba
     st.markdown(
         f"""
-        <a href="?theme={novo_tema}" title="{dica}" 
+        <a href="?theme={novo_tema}" 
+           target="_self"
+           title="{dica}" 
            style="display:inline-block; cursor:pointer; text-decoration:none;">
             <div style="
                 border: 2px dashed {cor_borda};
@@ -1128,7 +1255,7 @@ with col_tonny:
             ">
                 <img src="https://raw.githubusercontent.com/eristionny/DocScripta-AI/main/tonnybot.png" 
                      alt="TonnyBot" 
-                     style="width:130px; display:block; margin:0 auto;" />
+                     style="width:110px; display:block; margin:0 auto;" />
                 <div style="
                     margin-top: 4px;
                     font-size: 1.4rem;
