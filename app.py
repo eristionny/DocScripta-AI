@@ -143,9 +143,11 @@ def aplicar_tema():
         visibility: hidden !important;
         display: none !important;
     }}
-    a[href*="share.streamlit.io"],
-    a[href*="github.com"],
-    a[href*="streamlit.io/cloud"] {{
+    footer a[href*="share.streamlit.io"],
+    footer a[href*="github.com"],
+    footer a[href*="streamlit.io/cloud"],
+    [data-testid="stFooter"] a,
+    [data-testid="stViewerBadge"] a {{
         visibility: hidden !important;
         display: none !important;
         font-size: 0 !important;
@@ -212,7 +214,7 @@ def aplicar_tema():
         opacity: 0.85 !important;
     }}
 
-    /* === BOTÃO TONNYBOT (tema toggle) — estilizado via JS === */
+    /* === BOTÃO TONNYBOT (tema toggle) — imagem clicável via HTML === */
 
     /* === PRIMARY BUTTON === */
     .stButton > button[kind="primary"] {{
@@ -1055,6 +1057,19 @@ for chave, valor in VALORES_INICIAIS.items():
 
 
 # ============================================================
+# LER PARAMETRO ?theme= DA URL (TROCA DE TEMA VIA TONNYBOT)
+# ============================================================
+try:
+    params = st.query_params
+    if "theme" in params:
+        tema_url = params["theme"]
+        if tema_url in ("dark", "light"):
+            st.session_state.theme_mode = tema_url
+except Exception:
+    pass
+
+
+# ============================================================
 # ATUALIZA EDITOR ORIGINALIDADE
 # ============================================================
 
@@ -1093,50 +1108,39 @@ col_tonny, col_titulo = st.columns([1, 5])
 with col_tonny:
     tema_atual = st.session_state.get("theme_mode", "dark")
     emoji_tema = "🌙" if tema_atual == "dark" else "☀️"
-    hint_tema = "Tocar para mudar p/ modo claro ☀️" if tema_atual == "dark" else "Tocar para mudar p/ modo escuro 🌙"
+    dica = "Tocar p/ modo claro ☀️" if tema_atual == "dark" else "Tocar p/ modo escuro 🌙"
+    cor_borda = "#5b6abf" if tema_atual == "dark" else "#4a59a0"
+    cor_txt = "#fafafa" if tema_atual == "dark" else "#1a1a2e"
 
-    # Botão para trocar tema ao tocar no robô
-    if st.button(
-        f"🤖 {emoji_tema}",
-        key="btn_tonny_tema",
-        help=hint_tema,
-        use_container_width=True
-    ):
-        st.session_state.theme_mode = "light" if tema_atual == "dark" else "dark"
-        st.rerun()
-
-    # JS: estilizar o botão do tonnybot (transparente, borda tracejada)
-    st.markdown('''
-    <script>
-    (function() {
-        var btns = window.parent.document.querySelectorAll('button');
-        btns.forEach(function(b) {
-            if (b.textContent.includes('🤖')) {
-                b.style.background = 'transparent';
-                b.style.border = '2px dashed #5b6abf';
-                b.style.borderRadius = '12px';
-                b.style.fontSize = '1.5rem';
-                b.style.padding = '0.2rem 0.5rem';
-                b.style.boxShadow = 'none';
-                b.style.minHeight = '0';
-                b.style.lineHeight = '1.2';
-                b.style.cursor = 'pointer';
-            }
-        });
-    })();
-    </script>
-    ''', unsafe_allow_html=True)
-
-    try:
-        st.image(
-            "tonnybot.png",
-            width=140
-        )
-    except Exception:
-        st.image(
-            "https://raw.githubusercontent.com/eristionny/DocScripta-AI/main/tonnybot.png",
-            width=140
-        )
+    # Imagem do robô como link clicável que troca o tema
+    # Ao tocar na imagem → recarrega a página com ?theme=light ou ?theme=dark
+    novo_tema = "light" if tema_atual == "dark" else "dark"
+    st.markdown(
+        f"""
+        <a href="?theme={novo_tema}" title="{dica}" 
+           style="display:inline-block; cursor:pointer; text-decoration:none;">
+            <div style="
+                border: 2px dashed {cor_borda};
+                border-radius: 14px;
+                padding: 8px;
+                text-align: center;
+                transition: all 0.2s ease;
+            ">
+                <img src="https://raw.githubusercontent.com/eristionny/DocScripta-AI/main/tonnybot.png" 
+                     alt="TonnyBot" 
+                     style="width:130px; display:block; margin:0 auto;" />
+                <div style="
+                    margin-top: 4px;
+                    font-size: 1.4rem;
+                    color: {cor_txt};
+                    text-align: center;
+                    line-height: 1;
+                ">{emoji_tema}</div>
+            </div>
+        </a>
+        """,
+        unsafe_allow_html=True
+    )
 
 with col_titulo:
     st.title("📚 DocScripta AI")
