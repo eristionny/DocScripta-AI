@@ -757,6 +757,34 @@ def aplicar_tema():
 
 
 # ============================================================
+# FUNÇÕES HELPER DE TEMA (devem estar antes da sidebar)
+# ============================================================
+
+def label_tema(texto, tamanho="0.9rem", peso="400", margem_top="0rem", margem_bottom="0.25rem"):
+    """Exibe um label com a cor correta do tema atual."""
+    tema = st.session_state.get("theme_mode", "dark")
+    cor = "#1a1a2e" if tema == "light" else "#fafafa"
+    st.markdown(
+        f'<p style="color:{cor}; font-size:{tamanho}; font-weight:{peso}; '
+        f'margin-top:{margem_top}; margin-bottom:{margem_bottom}; '
+        f'font-family:Source Sans Pro, sans-serif;">{texto}</p>',
+        unsafe_allow_html=True
+    )
+
+
+def subheader_tema(texto):
+    """Exibe um subheader com a cor correta do tema atual."""
+    tema = st.session_state.get("theme_mode", "dark")
+    cor = "#1a1a2e" if tema == "light" else "#fafafa"
+    st.markdown(
+        f'<h3 style="color:{cor}; font-size:1.1rem; font-weight:600; '
+        f'margin-top:0.5rem; margin-bottom:0.25rem; '
+        f'font-family:Source Sans Pro, sans-serif;">{texto}</h3>',
+        unsafe_allow_html=True
+    )
+
+
+# ============================================================
 # SIDEBAR — TOGGLE DE TEMA
 # ============================================================
 
@@ -786,30 +814,6 @@ with st.sidebar:
 
 # Aplica o tema CSS
 aplicar_tema()
-
-
-def label_tema(texto, tamanho="0.9rem", peso="400", margem_top="0rem", margem_bottom="0.25rem"):
-    """Exibe um label com a cor correta do tema atual."""
-    tema = st.session_state.get("theme_mode", "dark")
-    cor = "#1a1a2e" if tema == "light" else "#fafafa"
-    st.markdown(
-        f'<p style="color:{cor}; font-size:{tamanho}; font-weight:{peso}; '
-        f'margin-top:{margem_top}; margin-bottom:{margem_bottom}; '
-        f'font-family:Source Sans Pro, sans-serif;">{texto}</p>',
-        unsafe_allow_html=True
-    )
-
-
-def subheader_tema(texto):
-    """Exibe um subheader com a cor correta do tema atual."""
-    tema = st.session_state.get("theme_mode", "dark")
-    cor = "#1a1a2e" if tema == "light" else "#fafafa"
-    st.markdown(
-        f'<h3 style="color:{cor}; font-size:1.1rem; font-weight:600; '
-        f'margin-top:0.5rem; margin-bottom:0.25rem; '
-        f'font-family:Source Sans Pro, sans-serif;">{texto}</h3>',
-        unsafe_allow_html=True
-    )
 
 
 # ============================================================
