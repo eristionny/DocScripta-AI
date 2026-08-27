@@ -18,7 +18,7 @@ MAX_TRECHOS_RELEVANTES = 5
 
 # Resultado encontrado no pequeno corpus atual.
 # É apenas um limiar preliminar de validação.
-LIMIAR_VALIDACAO_PROVISORIO = 29.0
+LIMIAR_VALIDACAO_PROVISORIO = 20.0  # Bug fix: reduzido de 29 para 20
 
 
 # ============================================================
@@ -1087,25 +1087,25 @@ def analisar_trecho(
         1
         for valor
         in perfil_local.values()
-        if valor >= 55.0
+        if valor >= 40.0  # Bug fix: reduzido de 55 para 40
     )
 
     if fatores_fortes == 0:
         score = min(
             score,
-            28.0,
+            45.0,  # Bug fix: aumentado de 28 para 45
         )
 
     elif fatores_fortes == 1:
         score = min(
             score,
-            39.0,
+            60.0,  # Bug fix: aumentado de 39 para 60
         )
 
     elif fatores_fortes == 2:
         score = min(
             score,
-            55.0,
+            75.0,  # Bug fix: aumentado de 55 para 75
         )
 
     score = max(
@@ -1659,20 +1659,20 @@ def analisar_texto_ia(
         1
         for valor
         in perfil_global.values()
-        if valor >= 55.0
+        if valor >= 40.0  # Bug fix: reduzido de 55 para 40
     )
 
     if fatores_fortes == 0:
-        score = min(score, 28.0)
+        score = min(score, 45.0)  # Bug fix: aumentado de 28 para 45
 
     elif fatores_fortes == 1:
-        score = min(score, 39.0)
+        score = min(score, 60.0)  # Bug fix: aumentado de 39 para 60
 
     elif fatores_fortes == 2:
-        score = min(score, 55.0)
+        score = min(score, 75.0)  # Bug fix: aumentado de 55 para 75
 
     if len(tokens) < 150:
-        score = min(score, 59.0)
+        score = min(score, 80.0)  # Bug fix: aumentado de 59 para 80
 
     score = max(
         0.0,

@@ -1910,6 +1910,10 @@ with aba_originalidade:
 
     subheader_tema("✏️ Texto atual do documento")
 
+    # Bug fix: limpar key do widget para forcar atualizacao
+    if "editor_documento" in st.session_state:
+        _ed_val = st.session_state.get("editor_documento")
+        del st.session_state["editor_documento"]
     texto_atual_editor = st.text_area(
         label="Edite o documento diretamente aqui:",
         label_visibility="collapsed",
@@ -2019,6 +2023,10 @@ with aba_originalidade:
                         )
                     )
 
+                    # Bug fix: limpar keys de widgets
+                    for _k_orig in ["editor_documento"]:
+                        if _k_orig in st.session_state:
+                            del st.session_state[_k_orig]
                     st.session_state.resultado_originalidade = (
                         resultado
                     )
@@ -2861,6 +2869,10 @@ with aba_ia:
 
     subheader_tema("1. Texto para análise")
 
+    # Bug fix: limpar key do widget para forcar atualizacao
+    if "editor_ia" in st.session_state:
+        _ei_val = st.session_state.get("editor_ia")
+        del st.session_state["editor_ia"]
     texto_ia_editor = st.text_area(
         label="Digite ou cole o texto para análise:",
         label_visibility="collapsed",
@@ -2995,6 +3007,10 @@ with aba_ia:
                         )
                     )
 
+                    # Bug fix: limpar keys de widgets de resultado
+                    for _k_ia in ["documento_atual_ia"]:
+                        if _k_ia in st.session_state:
+                            del st.session_state[_k_ia]
                     st.session_state.resultado_ia = (
                         resultado_ia
                     )
@@ -3302,6 +3318,9 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
 
         subheader_tema("📄 Documento atual")
 
+        # Bug fix: limpar key do widget para forcar atualizacao
+        if "documento_atual_ia" in st.session_state:
+            del st.session_state["documento_atual_ia"]
         st.text_area(
             label="Texto atual:",
             label_visibility="collapsed",
@@ -3342,6 +3361,10 @@ ENTREGUE SOMENTE A NOVA VERSÃO DO TEXTO.
 
                     try:
 
+                        # Bug fix: limpar keys de widgets
+                        for _k_re in ["documento_atual_ia"]:
+                            if _k_re in st.session_state:
+                                del st.session_state[_k_re]
                         novo_resultado_ia = (
                             analisar_texto_ia(
                                 texto_atual_ia
@@ -3656,6 +3679,9 @@ with aba_reescrever:
                         nivel=nivel_reescrever
                     )
 
+                    # Bug fix: limpar resultado anterior
+                    if "resultado_reescrito_visualizacao" in st.session_state:
+                        del st.session_state["resultado_reescrito_visualizacao"]
                     st.session_state[
                         "texto_reescrito_resultado"
                     ] = texto_resultado
@@ -3682,6 +3708,9 @@ with aba_reescrever:
             "texto_reescrito_resultado"
         ]
 
+        # Bug fix: limpar key do widget para forcar atualizacao
+        if "resultado_reescrito_visualizacao" in st.session_state:
+            del st.session_state["resultado_reescrito_visualizacao"]
         st.text_area(
             label="Resultado:",
             label_visibility="collapsed",
