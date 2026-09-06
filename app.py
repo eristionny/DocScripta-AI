@@ -1649,7 +1649,7 @@ with col_limpar:
     btn_limpar_pesquisa = st.form_submit_button(
         "🧹 Limpar pesquisa",
         use_container_width=True,
-        key="btn_limpar_pesquisa_v2"     # Boa prática: especifique keys únicas
+        key="btn_limpar_main"     # Boa prática: especifique keys únicas
     )
 
         with col_limpar:
