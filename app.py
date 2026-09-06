@@ -1651,19 +1651,21 @@ with col_limpar:
         use_container_width=True,
         key="btn_limpar_main"     # Boa prática: especifique keys únicas
     )
+col_pesquisar, col_limpar = st.columns(2)
 
-        with col_limpar:
-            btn_limpar_pesquisa = st.form_submit_button(
-                "🧹 Limpar pesquisa",
-                use_container_width=True
-            )
-        with col_limpar:
+with col_pesquisar:
+    btn_texto = st.form_submit_button(
+        "🔎 Pesquisar",
+        use_container_width=True,
+        key="btn_pesquisar_busca"
+    )
 
-            btn_limpar_pesquisa = st.form_submit_button(
-                "🧹 Limpar pesquisa",
-                use_container_width=True
-            )
-
+with col_limpar:
+    btn_limpar_pesquisa = st.form_submit_button(
+        "🧹 Limpar pesquisa",
+        use_container_width=True,
+        key="btn_limpar_main"
+    )
     # --------------------------------------------------------
     # LIMPAR PESQUISA
     # --------------------------------------------------------
