@@ -1,6 +1,6 @@
 import io
 import streamlit as st
-
+from voz_microfone import componente_microfone
 from sintetizador import gerar_sintese_academica
 from reescrever_texto import reescrever_texto
 
@@ -1602,10 +1602,12 @@ with aba_principal:
     # ========================================================
     # PESQUISA DIRETA
     # ========================================================
-
+   
     st.markdown(
-        "### 🔎 Pesquisa Direta"
-    )
+    "#### 🎤 Faça sua pergunta por voz"
+)
+
+componente_microfone()
 
     chave_form = (
         f"form_texto_{st.session_state.text_key}"
@@ -1619,7 +1621,7 @@ with aba_principal:
         key=chave_form
     ):
 
-        prompt_texto = st.text_input(
+        prompt_texto = st.text_area(
             label="Digite o tema, pergunta ou comando:",
             label_visibility="collapsed",
             key=chave_campo,
