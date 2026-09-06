@@ -1639,15 +1639,15 @@ label_tema("Digite o tema, pergunta ou comando:", margem_top="-0.5rem")
 
             btn_texto = st.form_submit_button(
                 "🔎 Pesquisar",
-                use_container_width=True,
-                key="limpar_pesquisa_unico"
+                use_container_width=True
             )
 
         with col_limpar:
 
             btn_limpar_pesquisa = st.form_submit_button(
                 "🧹 Limpar pesquisa",
-                use_container_width=True
+                use_container_width=True,
+                key="limpar_pesquisa_unico"
             )
 
     # --------------------------------------------------------
