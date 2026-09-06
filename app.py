@@ -1633,22 +1633,24 @@ with aba_principal:
         )
 
         # ----------------------------------------------------
-        # BOTÕES
-        # ----------------------------------------------------
+       # BOTÕES
+# ----------------------------------------------------
 
-        col_pesquisar, col_limpar = st.columns(2)
+col_pesquisar, col_limpar = st.columns(2)
 
-        with col_pesquisar:
-            btn_texto = st.form_submit_button(
-                "🔎 Pesquisar",
-                use_container_width=True
-            )
+with col_pesquisar:
+    btn_texto = st.form_submit_button(
+        "🔎 Pesquisar",
+        use_container_width=True,
+        key="btn_pesquisar_busca"  # Boa prática: especifique keys únicas
+    )
 
-        with col_limpar:
-            btn_limpar_pesquisa = st.form_submit_button(
-                "🧹 Limpar pesquisa",
-                use_container_width=True
-            )
+with col_limpar:
+    btn_limpar_pesquisa = st.form_submit_button(
+        "🧹 Limpar pesquisa",
+        use_container_width=True,
+        key="btn_limpar_pesquisa_v2"     # Boa prática: especifique keys únicas
+    )
 
         with col_limpar:
             btn_limpar_pesquisa = st.form_submit_button(
