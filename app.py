@@ -1653,10 +1653,11 @@ with aba_principal:
 )
 
         with col_limpar:
-            btn_limpar_pesquisa = st.form_submit_button(
-                "🧹 Limpar pesquisa",
-                use_container_width=True
-            )
+       btn_limpar_pesquisa = st.form_submit_button(
+    "🧹 Limpar pesquisa",
+    use_container_width=True,
+    key="btn_limpar_pesquisa_unico"
+)
         with col_limpar:
 
             btn_limpar_pesquisa = st.form_submit_button(
