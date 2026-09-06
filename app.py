@@ -1599,15 +1599,15 @@ with aba_principal:
         "ou envie um PDF/DOCX."
     )
 
-    # ========================================================
-    # PESQUISA DIRETA
-    # ========================================================
-   
-    st.markdown(
-    "#### 🎤 Faça sua pergunta por voz"
-)
+# ========================================================
+# PESQUISA DIRETA
+# ========================================================
 
-componente_microfone()
+    st.markdown(
+        "#### 🎤 Faça sua pergunta por voz"
+    )
+
+    componente_microfone()
 
     chave_form = (
         f"form_texto_{st.session_state.text_key}"
@@ -1620,16 +1620,17 @@ componente_microfone()
     with st.form(
         key=chave_form
     ):
-
         prompt_texto = st.text_area(
             label="Digite o tema, pergunta ou comando:",
             label_visibility="collapsed",
             key=chave_campo,
-            placeholder=(
-                "Digite sua pergunta..."
-            )
+            placeholder="Digite sua pergunta..."
         )
-        label_tema("Digite o tema, pergunta ou comando:", margem_top="-0.5rem")
+
+        label_tema(
+            "Digite o tema, pergunta ou comando:",
+            margem_top="-0.5rem"
+        )
 
         # ----------------------------------------------------
         # BOTÕES
@@ -1638,12 +1639,22 @@ componente_microfone()
         col_pesquisar, col_limpar = st.columns(2)
 
         with col_pesquisar:
-
             btn_texto = st.form_submit_button(
                 "🔎 Pesquisar",
                 use_container_width=True
             )
 
+        with col_limpar:
+            btn_limpar_pesquisa = st.form_submit_button(
+                "🧹 Limpar pesquisa",
+                use_container_width=True
+            )
+
+        with col_limpar:
+            btn_limpar_pesquisa = st.form_submit_button(
+                "🧹 Limpar pesquisa",
+                use_container_width=True
+            )
         with col_limpar:
 
             btn_limpar_pesquisa = st.form_submit_button(
