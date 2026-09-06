@@ -1599,38 +1599,35 @@ with aba_principal:
         "ou envie um PDF/DOCX."
     )
 
-# ========================================================
-# PESQUISA DIRETA
-# ========================================================
+    # ========================================================
+    # PESQUISA DIRETA
+    # ========================================================
+   
+   st.markdown(
+    "#### 🎤 Faça sua pergunta por voz"
+)
 
-    st.markdown(
-        "#### 🎤 Faça sua pergunta por voz"
+componente_microfone()
+
+chave_form = (
+    f"form_texto_{st.session_state.text_key}"
+)
+
+chave_campo = (
+    f"texto_pesquisa_{st.session_state.text_key}"
+)
+
+with st.form(
+    key=chave_form
+):
+    prompt_texto = st.text_area(
+        label="Digite o tema, pergunta ou comando:",
+        label_visibility="collapsed",
+        key=chave_campo,
+        placeholder="Digite sua pergunta..."
     )
 
-    componente_microfone()
-
-    chave_form = (
-        f"form_texto_{st.session_state.text_key}"
-    )
-
-    chave_campo = (
-        f"texto_pesquisa_{st.session_state.text_key}"
-    )
-
-    with st.form(
-        key=chave_form
-    ):
-        prompt_texto = st.text_area(
-            label="Digite o tema, pergunta ou comando:",
-            label_visibility="collapsed",
-            key=chave_campo,
-            placeholder="Digite sua pergunta..."
-        )
-
-        label_tema(
-            "Digite o tema, pergunta ou comando:",
-            margem_top="-0.5rem"
-        )
+label_tema("Digite o tema, pergunta ou comando:", margem_top="-0.5rem")
 
         # ----------------------------------------------------
         # BOTÕES
@@ -1639,25 +1636,13 @@ with aba_principal:
         col_pesquisar, col_limpar = st.columns(2)
 
         with col_pesquisar:
+
             btn_texto = st.form_submit_button(
-    "🔎 Pesquisar",
-    use_container_width=True,
-    key=f"pesquisar_texto_{st.session_state.text_key}"
-)
+                "🔎 Pesquisar",
+                use_container_width=True,
+                key="limpar_pesquisa_unico"
+            )
 
-        with col_limpar:
-            btn_limpar_pesquisa = st.form_submit_button(
-    "🧹 Limpar pesquisa",
-    use_container_width=True,
-    key=f"limpar_pesquisa_{st.session_state.text_key}"
-)
-
-        with col_limpar:
-       btn_limpar_pesquisa = st.form_submit_button(
-    "🧹 Limpar pesquisa",
-    use_container_width=True,
-    key="btn_limpar_pesquisa_unico"
-)
         with col_limpar:
 
             btn_limpar_pesquisa = st.form_submit_button(
