@@ -1599,94 +1599,56 @@ with aba_principal:
         "ou envie um PDF/DOCX."
     )
 
-# ========================================================
-# PESQUISA DIRETA
-# ========================================================
+    # ========================================================
+    # PESQUISA DIRETA
+    # ========================================================
+   
+   st.markdown(
+    "#### 🎤 Faça sua pergunta por voz"
+)
 
-    st.markdown(
-        "#### 🎤 Faça sua pergunta por voz"
+componente_microfone()
+
+chave_form = (
+    f"form_texto_{st.session_state.text_key}"
+)
+
+chave_campo = (
+    f"texto_pesquisa_{st.session_state.text_key}"
+)
+
+with st.form(
+    key=chave_form
+):
+    prompt_texto = st.text_area(
+        label="Digite o tema, pergunta ou comando:",
+        label_visibility="collapsed",
+        key=chave_campo,
+        placeholder="Digite sua pergunta..."
     )
 
-    componente_microfone()
+label_tema("Digite o tema, pergunta ou comando:", margem_top="-0.5rem")
 
-    chave_form = (
-        f"form_texto_{st.session_state.text_key}"
-    )
+        # ----------------------------------------------------
+        # BOTÕES
+        # ----------------------------------------------------
 
-    chave_campo = (
-        f"texto_pesquisa_{st.session_state.text_key}"
-    )
+        col_pesquisar, col_limpar = st.columns(2)
 
-    with st.form(
-        key=chave_form
-    ):
-        prompt_texto = st.text_area(
-            label="Digite o tema, pergunta ou comando:",
-            label_visibility="collapsed",
-            key=chave_campo,
-            placeholder="Digite sua pergunta..."
-        )
+        with col_pesquisar:
 
-        label_tema(
-            "Digite o tema, pergunta ou comando:",
-            margem_top="-0.5rem"
-        )
-
-     # ====================================================
-        # 🎤 ENTRADA POR VOZ (só na primeira aba)
-        # ====================================================
-        componente_microfone()
-
-        with st.form(
-            key="form_pesquisa",
-            clear_on_submit=False
-        ):
-
-            prompt_texto = st.text_area(
-                label="Digite o tema, pergunta ou comando:",
-                label_visibility="collapsed",
-                key=chave_campo,
-                placeholder="Digite sua pergunta..."
+            btn_texto = st.form_submit_button(
+                "🔎 Pesquisar",
+                use_container_width=True
             )
 
-            label_tema(
-                "Digite o tema, pergunta ou comando:",
-                margem_top="-0.5rem"
+        with col_limpar:
+
+            btn_limpar_pesquisa = st.form_submit_button(
+                "🧹 Limpar pesquisa",
+                use_container_width=True
             )
 
-            # ----------------------------------------------------
-            # BOTÕES (dentro do form!)
-            # ----------------------------------------------------
-            col_pesquisar, col_limpar = st.columns(2)
-
-            with col_pesquisar:
-                btn_texto = st.form_submit_button(
-                    "🔎 Pesquisar",
-                    use_container_width=True,
-                    key="btn_pesquisar_busca"
-                )
-
-            with col_limpar:
-                btn_limpar_pesquisa = st.form_submit_button(
-                    "🧹 Limpar pesquisa",
-                    use_container_width=True,
-                    key="btn_limpar_main"
-                )
-col_pesquisar, col_limpar = st.columns(2)
-
-with col_pesquisar:
-    btn_texto = st.form_submit_button(
-        "🔎 Pesquisar",
-        use_container_width=True,
-        key="btn_pesquisar_busca"
-    )
-
-with col_limpar:
-    btn_limpar_pesquisa = st.form_submit_button(
-        "🧹 Limpar pesquisa",
-        use_container_width=True,
-        key="btn_limpar_main"
-    )
     # --------------------------------------------------------
     # LIMPAR PESQUISA
     # --------------------------------------------------------
